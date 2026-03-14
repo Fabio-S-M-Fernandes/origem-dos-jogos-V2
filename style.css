@@ -1,0 +1,550 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variáveis Atualizadas */
+:root {
+  --bg: #0b0e14; 
+  --card: #161b22; 
+  --text: #f0f6fc;
+  --accent: #8b5cf6; /* Roxo Gamer */
+  --accent-glow: rgba(139, 92, 246, 0.4);
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  padding-top: 80px;
+  background: radial-gradient(circle at top, var(--bg), #000); 
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.5s, color 0.5s;
+  line-height: 1.6;
+}
+  
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  color: cyan;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-size: 22px;
+  transition: opacity 0.5s;
+}
+
+/* Barra Superior - Versão Premium Dark */
+.navbar-topo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 85px;
+  /* Fundo preto bem escuro com leve transparência (efeito vidro) */
+  background-color: rgba(0, 0, 0, 0); 
+  backdrop-filter: blur(7px); /* Deixa o fundo levemente embaçado */
+  display: flex;
+  align-items: center;
+  z-index: 2000;
+  border-bottom: 1px solid #1e293b; /* Linha sutil na parte de baixo */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidade */
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* Remove qualquer sublinhado */
+  cursor: pointer;      /* Garante que apareça a mãozinha ao passar o mouse */
+}
+
+.logo-img {
+  height: 60px; /* Tamanho maior que você pediu antes */
+  width: 60px;
+  border-radius: 12px;
+  border: 2px solid #334155;
+  transition: all 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+  border-color: var(--accent); /* Usa o roxo gamer do seu site na borda */
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+/* Ajuste para o conteúdo não subir */
+main {
+  margin-top: 80px;
+}
+
+#progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 0;
+  background: var(--accent);
+  z-index: 999;
+}
+
+/* =====================
+   MAIN / CARDS
+===================== */
+main {
+  max-width: 1000px;
+  margin: 1px auto;
+  padding: 2px;
+}
+
+.card {
+  background: var(--card);
+  padding: 2rem;  
+  border-radius: 30px;
+  margin: 20px auto;
+  max-width: 1100px; /* Aumentei de 800px para 1100px */
+  width: 100%;        /* Garante que em telas menores ele não cole na borda */
+  margin-bottom: 2rem; /* Força o espaçamento igual em todos */
+  margin-top: 10px;
+}
+
+h2 {
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+}
+
+.console-card {
+  background: var(--card);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.3s, box-shadow 0.7s;
+}
+
+.console-card:hover {
+  transform: rotateY(10deg) rotateX(10deg) scale(1.05);
+  box-shadow: 10px 10px 10px 10px rgba(0.4,0.4,0.4,0.4);
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  fill: var(--accent);
+  margin-bottom: 10px;
+  transition: transform 0.8s;
+}
+
+.console-card:hover .icon {
+  transform: rotate(360deg) scale(1.2);
+}
+
+.icon.line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.console-card:hover .icon.line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw 0s forwards;
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.tipos-lista {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.tipos-lista li {
+  background: var(--card);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.galeria {
+  display: flex;          /* Coloca os itens lado a lado */
+  flex-wrap: wrap;       /* Se não couber na tela, ele pula para a linha de baixo (bom para celular) */
+  gap: 15px;             /* Cria um espaço entre as imagens */
+  justify-content: center; /* Centraliza as imagens no meio do card */
+  padding: 10px;
+}
+
+.galeria img {
+  width: calc(25% - 15px); /* Tenta colocar 4 imagens por linha */
+  min-width: 150px;        /* Não deixa a imagem ficar pequena demais no celular */
+  height: 150px;           /* Define uma altura fixa para ficarem todas iguais */
+  object-fit: cover;       /* Corta a imagem sem distorcer para caber no quadrado */
+  border-radius: 10px;     /* Deixa as pontas arredondadas */
+  transition: transform 0.4s;
+  border: 2px solid var(--accent);
+}
+
+.galeria img:hover {
+  transform: scale(1.2);  /* Efeito de aumento quando passa o mouse */
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 0.8s;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: none;
+}
+
+#quiz {
+  text-align: center;
+  margin-top: 0 !important;
+}
+
+#quiz-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  background: var(--card); /* Fundo azul escuro em vez de preto puro */
+  border-radius: 15px;
+  border: 2px solid var(--accent); /* Borda roxa em vez de branca */
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); /* Brilho roxo suave */
+}
+
+#info-nivel {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.opcoes {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* O segredo para os botões ficarem Dark e bonitos */
+.opcao {
+  background: var(--bg); /* Fundo bem escuro */
+  color: var(--text); /* Letra branca/clara */
+  border: 2px solid var(--accent); /* Borda roxa */
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.opcao:hover {
+  background: var(--accent); /* Fica roxo quando passa o mouse */
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+}
+
+.opcao.correta {
+  background: #16a34a !important;
+  border-color: #16a34a !important;
+  color: #fff;
+}
+
+.opcao.errada {
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
+  color: #fff;
+  animation: shake 0.4s ease-in-out;
+}
+
+#resultado {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+#recorde {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+#proxima {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#btn-proxima {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+a:focus,
+button:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+  }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+/* Estilo geral das caixas de texto */
+.input-group {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+       .btn-jogar{
+    background-color: #8a2be2; /* Roxo vibrante */
+    color: white;
+    padding: 12px 35px;
+    border: none;
+    border-radius: 50px; /* Deixa ele arredondado */
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Faz a animação ser suave */
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-jogar:hover {
+    background-color: #9d4edd;
+    transform: scale(1.1); /* Aumenta um pouquinho quando passa o mouse */
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+}
+
+/* Centraliza a seção de contato e ajusta a largura */
+#form-contato {
+  width: 100%;
+  max-width: 900px;     /* Largura interna dos campos */
+  margin: 30px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-bottom: 1rem;
+}
+
+/* Garante que o título e o parágrafo da seção fiquem centralizados */
+#contato h2, #contato p {
+  text-align: center;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--accent); /* Cor roxa para o título do campo */
+}
+
+.input-group input, 
+.input-group textarea {
+  width: 100%;
+  padding: 15px;
+  background: #0f172a;     /* Azul bem escuro */
+  border: 2px solid #334155;
+  border-radius: 8px;
+  color: #fff;
+  font-family: inherit;
+  resize: none;            /* Fixa o tamanho da mensagem */
+  outline: none;
+  transition: 0.3s;
+}
+
+/* Brilho ao clicar */
+.input-group input:focus, 
+.input-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+/* Estilo específico para a área de mensagem */
+.input-group textarea {
+  width: 100%;
+  padding: 12px;
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 8px;
+  color: #f1f5f9;
+  resize: none;        /* Continua fixo como você pediu */
+  height: 100px;       /* Altura fixa */
+  outline: none;
+  transition: 0.3s;
+}
+
+/* Efeito de brilho roxo ao clicar */
+.input-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+#contato {
+  max-width: 100px;     /* Aqui você define a largura do card todo */
+  margin: 40px;    /* O 'auto' centraliza o card na página */
+}
+
+#contato.card {
+  width: 100%;             /* Mesma largura dos outros cards */
+  max-width: 1000px;        /* Ajuste para o tamanho padrão do seu site */
+  margin: 10px auto;       /* Centraliza na página */
+  padding: 15px;           /* Espaço interno generoso */
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* Centraliza tudo que está dentro do card */
+}
+
+/* Cor do texto de exemplo (placeholder) */
+::placeholder {
+  color: #64748b;
+  opacity: 0.8;
+}
+
+.btn-enviar {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px auto;
+  padding: 12px 40px;
+  display: block;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+.btn-enviar:hover {
+  background: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+}
+
+/* =========================================
+   8. BOTÃO VOLTAR AO TOPO
+   ========================================= */
+#back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none; /* Começa escondido */
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  font-size: 20px;
+}
+
+#back-to-top:hover {
+  transform: translateY(-5px);
+  background-color: #7c3aed;
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+/* Deixa o botão visível quando a classe 'show' for adicionada pelo JS */
+#back-to-top.show {
+  display: block;
+  animation: fadeIn 0.5s;
+} 
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   7. RODAPÉ (FOOTER)
+   ========================================= */
+footer {
+  padding: 20px 20px;
+  margin-top: 10px;
+  text-align: center; 
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-content p {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.social-links {
+  display: flex;
+  gap: 20px;
+}
+
+.social-links a {
+  color: var(--text);
+  font-size: 28px;
+  transition: 0.1s;
+  text-decoration: none;
+}
+
+/* Efeito de cores individuais ao passar o mouse */
+.social-links a:hover {
+  transform: translateY(-3px);
+}
+
+.fa-instagram:hover { color: #e1306c;}
+.fa-linkedin-in:hover { color: #0077b5;}
+.fa-github:hover { color: #6e5494; }

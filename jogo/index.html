@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../logo.png" type="image/png">
+    <title>Snake Pro: Evolution Edition</title>
+    <style>
+        :root {
+        --bg-color: #020617;
+        --card-bg: #0f172a;
+        --border-color: #1e293b;
+        --accent-green: #5b8a2f;
+        --accent-blue: #38bdf8;
+        --text-main: #f8fafc;
+        --text-dim: #94a3b8;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Mudamos de center para flex-start */
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    padding-top: 100px; /* Ajustado */
+    background: #000;
+    color: var(--text-main);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+        /* Barra Superior - Versão Premium Dark */
+/* Barra Superior - Versão Premium Dark */
+.navbar-topo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 85px;
+  /* Fundo preto bem escuro com leve transparência (efeito vidro) */
+  background-color: rgba(0, 0, 0, 0); 
+  backdrop-filter: blur(7px); /* Deixa o fundo levemente embaçado */
+  display: flex;
+  align-items: center;
+  z-index: 2000;
+  border-bottom: 1px solid #1e293b; /* Linha sutil na parte de baixo */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidade */
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* Remove qualquer sublinhado */
+  cursor: pointer;      /* Garante que apareça a mãozinha ao passar o mouse */
+}
+
+.logo-img {
+  height: 60px; /* Tamanho maior que você pediu antes */
+  width: 60px;
+  border-radius: 12px;
+  border: 2px solid #334155;
+  transition: all 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+  border-color: var(--accent); /* Usa o roxo gamer do seu site na borda */
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+/* Ajuste para o conteúdo não subir */
+main {
+  margin-top: 80px;
+}
+
+.status-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px; /* Ajustado */
+    z-index: 10;
+}
+
+        /* Container Principal */
+        .game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 5px 0; /* Ajustado */
+}
+
+        /* Container dos Placares estilo Card */
+        /* Placar Responsivo */
+        .header-ui {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        gap: 10px;
+        margin-bottom: 20px;
+        background: var(--card-bg);
+        padding: 15px;
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        }
+        
+        .score-box {
+            background: rgba(30, 41, 59, 0.9);
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            text-align: center;
+            min-width: 90px;
+        }
+        .label { 
+        font-size: 0.65rem; 
+        color: var(--text-dim); 
+        text-transform: uppercase; 
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        }
+
+        .value { font-size: 1.4rem; font-weight: 800; }
+
+        /* Botões em Grade */
+        .controls-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+        width: 100%;
+        margin-bottom: 20px;
+        }
+        
+        .score-box { text-align: center; flex: 1; }
+        .label { font-size: clamp(0.6rem, 2vw, 0.7rem); color: var(--text-dim); text-transform: uppercase; font-weight: 600; }
+        .value { font-size: clamp(1rem, 4vw, 1.4rem); font-weight: 800; display: block; }
+
+/* Deixando o botão de voltar mais elegante e menor para o topo */
+.btn-voltar {
+    background: rgba(138, 43, 226, 0.2);
+    color: #ffffff;
+    padding: 20px 20px;
+    border: 2px solid #8a2be2;
+    border-radius: 100px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.btn-voltar:hover {
+    background: #8a2be2;
+    color: white;
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
+    transform: translateX(-5px); /* Pequeno efeito de movimento ao voltar */
+}
+        
+        .ui-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(2, 6, 23, 0.85);
+        backdrop-filter: blur(4px);
+        z-index: 10;
+        }
+
+        .hidden { display: none; }
+
+        h1 { font-weight: 900; text-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+
+    button {
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        background: var(--card-bg);
+        color: var(--text-main);
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover { background: #1e293b; transform: translateY(-2px); }
+
+    .btn-ranking { background: linear-gradient(135deg, #22c55e, #16a34a); border: none; }
+
+    #game-container {
+    position: relative;
+    width: 100%;
+    /* O espaçamento que você pediu entre a borda e o jogo */
+    padding: 20px; 
+    background-color: #070b14;
+    /* Mapa de fundo (Grade Tecnológica) */
+    background-image: 
+    linear-gradient(rgba(168, 85, 247, 0.05) 1px, transparent 1px), /* Mude o RGBA para a cor desejada */
+    linear-gradient(90deg, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px; /* Alinhado com o 'box' do jogo */
+    
+    border-radius: 24px;
+    border: 3px solid #00ff5e; /* Cor inicial */
+    animation: borderRGB 8s linear infinite; /* 8 segundos para dar a volta nas cores */
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.8), 0 0 15px rgba(56, 189, 248, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+@keyframes borderRGB {
+    0%   { border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); } /* Vermelho */
+    10%  { border-color: #ff8000; } /* Laranja */
+    20%  { border-color: #ffff00; } /* Amarelo */
+    30%  { border-color: #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); } /* Verde */
+    40%  { border-color: #38bdf8; } /* Azul */
+    50% { border-color: #ffffff; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); } /* Volta pro Vermelho */
+    60%   { border-color: #001eff; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); } /* Vermelho */
+    70%  { border-color: #8800ff; } /* Laranja */
+    80%  { border-color: #5100ff; } /* Amarelo */
+    90%  { border-color: #ff0059; box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); } /* Verde */
+    100% { border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); } /* Volta pro Vermelho */
+}
+
+canvas {
+    /* Moldura do campo de batalha */
+    border: 2px solid rgb(255, 255, 255);
+    background: #000000;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.774);
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Efeito de Scanline (Linhas de TV antiga) para dar estilo */
+#game-container::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 3px 100%;
+    pointer-events: none; /* Deixa os cliques passarem direto */
+    z-index: 5;
+}
+
+/* O fundo escuro que cobre a tela toda */
+#ranking-modal {
+    display: none; /* O JS vai mudar isso para 'flex' */
+    position: fixed;
+    inset: 0; /* Cobre tudo: top, bottom, left, right: 0 */
+    background: rgba(0, 0, 0, 0.85); /* Fundo bem dark */
+    backdrop-filter: blur(8px); /* Efeito de desfoque no fundo */
+    z-index: 3000; /* MAIOR que a nav (que é 2000) */
+    
+    /* Centralização perfeita */
+    display: none; 
+    align-items: center;
+    justify-content: center;
+}
+
+/* A caixa do Ranking em si */
+.modal-content {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 40px rgb(255, 255, 255);
+    position: relative;
+    /* Removemos margens fixas para o flex do pai centralizar */
+    margin: 0; 
+}
+
+    .ranking-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #ffffff;
+        font-size: 1.1rem;
+    }
+
+    .hidden { display: none !important; }
+
+    .ranking-item:last-child { border-bottom: none; }
+
+    .rank-pos { color: var(--accent-blue); font-weight: bold; }
+    .rank-score { color: var(--accent-green); font-weight: 800; }
+
+    .off { opacity: 0.5; color: var(--text-dim); }
+
+    .skin-controls {
+        display: flex;
+        gap: 60px;
+        justify-content: center;
+        background: var(--card-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 20px;
+        width: 100%;
+        display: flex;
+        gap: 40px; /* Aumentei o espaço entre a cor da cabeça e do corpo */
+        padding: 20px; /* Mais preenchimento interno */
+    }
+
+    .skin-controls label { 
+        font-size: 0.8rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 5px; 
+        cursor: pointer; 
+        font-weight: 600;
+    }
+
+    input[type="color"] { 
+        border: none; 
+        border-radius: 6px; 
+        width: 35px; 
+        height: 35px; 
+        cursor: pointer; 
+        background: none; 
+    }
+
+    input[type="color"]::-webkit-color-swatch { border-radius: 6px; border: 2px solid var(--border-color); }
+    </style>
+</head>
+<body>
+    <link rel="icon" href="../logo.png" type="image/png">
+
+    <nav class="navbar-topo">
+        <div class="nav-container">
+            <a href="../index.html" class="logo-link">
+                <img src="../logo.png" alt="Logo" class="logo-img">
+            </a>
+        </div>
+    </nav>
+
+    <div class="game-wrapper">
+    <div class="header-ui">
+        <div class="score-box"><span class="label"><strong>Pontos</strong></span><span id="score-val" class="value" style="color: var(--accent-green)">0</span></div>
+        <div class="score-box"><span class="label"><strong>Nível</strong></span><span id="level-val" class="value" style="color: var(--accent-blue)">1</span></div>
+        <div class="score-box"><span class="label"><strong>Recorde</strong></span><span id="high-val" class="value" style="color: #fbbf24">0</span></div>
+    </div>
+
+    <div class="controls-row">
+        <button id="btn-music" onclick="toggleMusic()">🎵 Música: ON</button>
+        <button id="btn-sounds" onclick="toggleSounds()">🔊 Efeitos: ON</button>
+        <button class="btn-ranking" onclick="showRanking()">🏆 RANKING</button>
+    </div>
+
+    <div class="skin-controls">
+        <label>Cor do Corpo: <input type="color" id="body-color" value="#166534" onchange="updateSkin()"></label>
+    </div>
+
+    <div id="game-container">
+        <canvas id="snakeGame" width="600" height="400"></canvas>
+        <div id="overlay" class="ui-overlay">
+            <h1 id="status-title" style="color: var(--accent-green);">SNAKE PRO</h1>
+            <p id="status-msg">Pressione <strong style="color:rgb(255, 255, 0)">Espaço OU Escape</strong> para decolar</p>
+        </div>
+    </div>
+</div>
+
+<div id="ranking-modal" class="ui-overlay hidden">
+    <div class="modal-content">
+        <h2 style="color: #fbbf24; margin-top: 0;">🏆 TOP 5</h2>
+        <div id="ranking-list"></div>
+        <button class="btn-ranking" onclick="closeRanking()" style="margin-top: 20px; width: 100%;">FECHAR</button>
+    </div>
+</div>
+
+    </div>
+        <audio id="eatSound" src="eat.mp3"></audio>
+        <audio id="levelSound" src="level.mp3"></audio>
+        <audio id="crashSound" src="crash.mp3"></audio>
+        <audio id="bgMusic" src="music.mp3" loop></audio>
+<script>
+
+// No seu script.js, garanta que ele ignore links com a classe 'link-externo'
+document.querySelectorAll("nav a:not(.link-externo)").forEach(link => {
+  link.addEventListener("click", e => {
+    const href = link.getAttribute("href");
+    if (href.startsWith("#")) { // Só interfere se for link interno da página
+      e.preventDefault();
+      document.querySelector(href).scrollIntoView({ behavior: "smooth" });
+    }
+  });
+});
+
+        const canvas = document.getElementById("snakeGame");
+const ctx = canvas.getContext("2d");
+const scoreVal = document.getElementById("score-val");
+const highVal = document.getElementById("high-val");
+const levelVal = document.getElementById("level-val");
+const overlay = document.getElementById("overlay");
+const statusTitle = document.getElementById("status-title");
+
+const eatSound = document.getElementById("eatSound");
+const levelSound = document.getElementById("levelSound");
+const crashSound = document.getElementById("crashSound");
+const bgMusic = document.getElementById("bgMusic");
+
+// Variáveis de controle de som
+let musicEnabled = true;
+let soundsEnabled = true;
+
+bgMusic.volume = 0.3;
+eatSound.volume = 0.6;
+levelSound.volume = 0.6;
+crashSound.volume = 0.8;
+
+function toggleMusic() {
+    musicEnabled = !musicEnabled;
+    const btn = document.getElementById("btn-music");
+    if (musicEnabled) {
+        btn.innerText = "🎵 Música: ON";
+        btn.classList.remove("off");
+        if (gameRunning) bgMusic.play().catch(() => {});
+    } else {
+        btn.innerText = "🎵 Música: OFF";
+        btn.classList.add("off");
+        bgMusic.pause();
+    }
+}
+
+function toggleSounds() {
+    soundsEnabled = !soundsEnabled;
+    const btn = document.getElementById("btn-sounds");
+    if (soundsEnabled) {
+        btn.innerText = "🔊 Efeitos: ON";
+        btn.classList.remove("off");
+    } else {
+        btn.innerText = "🔊 Efeitos: OFF";
+        btn.classList.add("off");
+    }
+    eatSound.muted = !soundsEnabled;
+    levelSound.muted = !soundsEnabled;
+    crashSound.muted = !soundsEnabled;
+}
+
+// Sistema de Skins
+let headColor = localStorage.getItem("snakeHeadColor") || "#22c55e";
+let bodyColor = localStorage.getItem("snakeBodyColor") || "#166534";
+
+document.getElementById("body-color").value = bodyColor;
+
+function updateSkin() {
+    bodyColor = document.getElementById("body-color").value;
+    localStorage.setItem("snakeHeadColor", headColor);
+    localStorage.setItem("snakeBodyColor", bodyColor);
+}
+
+// Lógica do Jogo
+const box = 20;
+let score = 0, level = 1, gameRunning = false, isPaused = false;
+let snake, direction, food, gameLoop;
+let currentSpeed = 120;
+let obstacles = []; // Apenas obstáculos agora!
+
+let highscore = localStorage.getItem("snakeRecorde") || 0;
+highVal.innerText = highscore;
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function initGame() {
+    score = 0; level = 1; currentSpeed = 120;
+    updateUI();
+    direction = "RIGHT"; isPaused = false;
+    snake = [{x: 10*box, y: 10*box}, {x: 9*box, y: 10*box}, {x: 8*box, y: 10*box}];
+    spawnFood();
+    spawnObstacles(); // Cria as paredes do nível 1
+    
+    gameRunning = true;
+    overlay.classList.add("hidden");
+    if (musicEnabled) bgMusic.play().catch(() => {});
+    startLoop();
+}
+
+function startLoop() {
+    if(gameLoop) clearInterval(gameLoop);
+    gameLoop = setInterval(draw, currentSpeed);
+}
+
+function updateUI() {
+    scoreVal.innerText = score;
+    levelVal.innerText = level;
+}
+
+function spawnFood() {
+    food = {
+        x: Math.floor(Math.random() * (canvas.width / box)) * box,
+        y: Math.floor(Math.random() * (canvas.height / box)) * box
+    };
+    // Impede que a comida nasça em cima de um obstáculo
+    if (obstacles.some(o => o.x === food.x && o.y === food.y)) {
+        spawnFood(); 
+    }
+}
+
+function spawnObstacles() {
+    obstacles = [];
+    const qty = Math.min(level - 1, 15); // Aumenta os obstáculos a cada nível
+    for(let i = 0; i < qty; i++) {
+        let obs = {
+            x: Math.floor(Math.random() * (canvas.width / box)) * box,
+            y: Math.floor(Math.random() * (canvas.height / box)) * box
+        };
+        // Evita que obstáculo nasça em cima da cobra
+        if(!snake.some(p => p.x === obs.x && p.y === obs.y)) {
+            obstacles.push(obs);
+        }
+    }
+}
+
+document.addEventListener("keydown", (e) => {
+    // Monitora se o usuário mudou de aba ou minimizou a janela
+document.addEventListener("visibilitychange", () => {
+    // Se a página ficou escondida e o jogo estava rodando...
+    if (document.hidden && gameRunning && !isPaused) {
+        // Ativa a pausa
+        isPaused = true;
+        overlay.classList.remove("hidden");
+        statusTitle.innerText = "PAUSADO";
+        statusTitle.style.color = "#fbbf24"; // Cor amarela de alerta
+        
+        // Pausa a música
+        if (musicEnabled) {
+            bgMusic.pause();
+        }
+    }
+});
+    // Lista das teclas que fazem a página rolar
+    const keysToBlock = ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+
+    // Se a tecla pressionada estiver na lista, impede o scroll
+    if (keysToBlock.includes(e.code)) {
+        e.preventDefault();
+    }
+
+    // Lógica para começar o jogo (Espaço)
+    if(e.code === "Space" && "Escape" && !gameRunning) {
+        if(audioCtx.state === 'suspended') audioCtx.resume();
+        initGame();
+        return;
+    }
+    
+    // Lógica para Pausar (Esc)
+    if(e.code === "Escape" && "Space" && gameRunning) {
+        isPaused = !isPaused;
+        overlay.classList.toggle("hidden");
+        statusTitle.innerText = "PAUSADO";
+        statusTitle.style.color = "#fbbf24";
+        if (isPaused) bgMusic.pause();
+        else if (musicEnabled) bgMusic.play().catch(() => {});
+        return;
+    }
+
+    // Movimentação da Cobra
+    if(!isPaused) {
+        if(e.keyCode == 37 && direction != "RIGHT") direction = "LEFT";
+        else if(e.keyCode == 38 && direction != "DOWN") direction = "UP";
+        else if(e.keyCode == 39 && direction != "LEFT") direction = "RIGHT";
+        else if(e.keyCode == 40 && direction != "UP") direction = "DOWN";
+    }
+});
+
+function draw() {
+    if(isPaused || !gameRunning) return;
+    
+    // Fundo preto absoluto para o canvas brilhar
+    ctx.fillStyle = "#000000"; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Desenha uma grade bem fininha DENTRO do canvas
+    ctx.strokeStyle = "rgba(56, 189, 248, 0.05)"; // Azul bem transparente
+    ctx.lineWidth = 0.5;
+    for(let i = 0; i <= canvas.width; i += box) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+    }
+    for(let j = 0; j <= canvas.height; j += box) {
+        ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+    }
+
+    // 1. Desenhar Obstáculos (Paredes)
+    obstacles.forEach(obs => {
+        ctx.fillStyle = "#334155";
+        ctx.beginPath();
+        ctx.roundRect(obs.x + 1, obs.y + 1, box - 2, box - 2, 4);
+        ctx.fill();
+        ctx.fillStyle = "#475569";
+        ctx.fillRect(obs.x + 4, obs.y + 4, 3, 3);
+    });
+    
+    // 2. Desenhar Maçã Realista
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "#ef4444";
+    let appleGrad = ctx.createRadialGradient(food.x + box/2, food.y + box/2, 2, food.x + box/2, food.y + box/2, box/2);
+    appleGrad.addColorStop(0, "#fca5a5");
+    appleGrad.addColorStop(1, "#dc2626");
+    
+    ctx.fillStyle = appleGrad;
+    ctx.beginPath(); 
+    ctx.arc(food.x + box/2, food.y + box/2, box/2 - 2, 0, Math.PI*2); 
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = "#4ade80";
+    ctx.beginPath();
+    ctx.ellipse(food.x + box/2 + 3, food.y + box/2 - 7, 4, 2, Math.PI / 4, 0, Math.PI*2);
+    ctx.fill();
+
+    // 3. Lógica de Movimento
+    let headX = snake[0].x, headY = snake[0].y;
+    if(direction == "LEFT") headX -= box;
+    if(direction == "UP") headY -= box;
+    if(direction == "RIGHT") headX += box;
+    if(direction == "DOWN") headY += box;
+
+    // Se comeu a comida
+    if(headX == food.x && headY == food.y) {
+        score += 10;
+        if (soundsEnabled) { eatSound.currentTime = 0; eatSound.play().catch(() => {}); }
+        spawnFood();
+        
+        if(score % 50 === 0) {
+            level++;
+            currentSpeed = Math.max(40, currentSpeed - 15);
+            if (soundsEnabled) { levelSound.currentTime = 0; levelSound.play().catch(() => {}); }
+            spawnObstacles(); // Recria as paredes quando muda de nível
+            startLoop();
+        }
+
+        if(score > highscore) {
+            highscore = score;
+            highVal.innerText = highscore;
+            localStorage.setItem("snakeRecorde", highscore);
+        }
+        updateUI();
+    } else {
+        snake.pop(); // Remove a cauda se não comeu
+    }
+
+    let newHead = { x: headX, y: headY };
+
+    // 4. Checagem de Colisão (Paredes, Próprio Corpo ou Obstáculos)
+    const hitObstacle = obstacles.some(o => o.x === headX && o.y === headY);
+    const hitSelf = snake.some(p => p.x === headX && p.y === headY);
+
+    if(headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height || hitSelf || hitObstacle) {
+        if (soundsEnabled) { crashSound.currentTime = 0; crashSound.play().catch(() => {}); }
+        saveScore(score);
+        gameRunning = false;
+        clearInterval(gameLoop);
+        statusTitle.innerText = "GAME OVER";
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+        statusTitle.style.color = "#ef4444";
+        overlay.classList.remove("hidden");
+        return;
+    }
+
+    // Adiciona a nova cabeça se não bateu em nada
+    snake.unshift(newHead);
+
+    // --- 5. DESENHAR COBRA PROFISSIONAL ---
+snake.forEach((part, i) => {
+    const isHead = i === 0;
+    const isTail = i === snake.length - 1;
+    
+    // Cauda afunilada, corpo normal, cabeça levemente maior
+    let size = isHead ? box * 1.1 : (isTail ? box * 0.8 : box * 1.0);
+    let offset = (box - size) / 2;
+
+    // Gradiente de Volume (Efeito 3D)
+    let grad = ctx.createRadialGradient(
+        part.x + box/2, part.y + box/2, 2,
+        part.x + box/2, part.y + box/2, box/2
+    );
+    grad.addColorStop(0, isHead ? headColor : bodyColor);
+    grad.addColorStop(1, "#052e16"); // Sombra profunda nas bordas
+
+    ctx.fillStyle = grad;
+    ctx.shadowBlur = isHead ? 15 : 5;
+    ctx.shadowColor = "rgba(0,0,0,0.5)";
+
+    if (isHead) {
+        // --- CABEÇA REALISTA ---
+        ctx.save();
+        ctx.translate(part.x + box/2, part.y + box/2);
+        
+        // Rotaciona a cabeça conforme a direção
+        const angles = { "RIGHT": 0, "LEFT": Math.PI, "UP": -Math.PI/2, "DOWN": Math.PI/2 };
+        ctx.rotate(angles[direction]);
+
+        // Formato de "Diamante" Arredondado
+        ctx.beginPath();
+        ctx.moveTo(12, 0); 
+        ctx.bezierCurveTo(10, -10, -10, -10, -10, 0); // Lado de cima
+        ctx.bezierCurveTo(-10, 10, 10, 10, 12, 0);    // Lado de baixo
+        ctx.fill();
+
+        // OLHOS COM PUPILAS
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(4, -5, 3, 0, Math.PI * 2); // Olho 1
+        ctx.arc(4, 5, 3, 0, Math.PI * 2);  // Olho 2
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(5, -5, 1.5, 0, Math.PI * 2); // Pupila 1
+        ctx.arc(5, 5, 1.5, 0, Math.PI * 2);  // Pupila 2
+        ctx.fill();
+
+        // LÍNGUA BIFURCADA ANIMADA (Sutil)
+        if (Math.random() > 0.8) { // A língua "sai" aleatoriamente
+            ctx.strokeStyle = "#ff4444";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(12, 0);
+            ctx.lineTo(18, 0);
+            ctx.moveTo(18, 0);
+            ctx.lineTo(21, -3); // Ponta 1
+            ctx.moveTo(18, 0);
+            ctx.lineTo(21, 3);  // Ponta 2
+            ctx.stroke();
+        }
+        ctx.restore();
+        } else {
+        // --- CORPO E CAUDA ---
+        ctx.beginPath();
+        ctx.roundRect(part.x + offset, part.y + offset, size, size, isTail ? 10 : 6);
+        ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+    });
+}
+function saveScore(score) {
+    let scores = JSON.parse(localStorage.getItem("snakeRanking")) || [];
+    scores.push(score);
+    scores.sort((a,b)=> b-a);
+    scores = scores.slice(0,5);
+    localStorage.setItem("snakeRanking", JSON.stringify(scores));
+}
+
+function showRanking() {
+    const scores = JSON.parse(localStorage.getItem("snakeRanking")) || [];
+    const rankingList = document.getElementById("ranking-list");
+    const modal = document.getElementById("ranking-modal");
+    modal.style.display = "flex";
+
+    rankingList.innerHTML = "";
+    if (scores.length === 0) {
+        rankingList.innerHTML = "<p style='color: #94a3b8;'>Nenhum recorde ainda!</p>";
+    }
+
+    scores.forEach((s, i) => {
+        rankingList.innerHTML += `
+            <div class="ranking-item">
+                <span class="rank-pos">${i + 1}º</span>
+                <span class="rank-score">${s} pts</span>
+            </div>
+        `;
+    });
+
+    modal.classList.remove("hidden");
+}
+
+function closeRanking() {
+    document.getElementById("ranking-modal").classList.add("hidden");
+}
+    </script>
+</body>
+</html>
