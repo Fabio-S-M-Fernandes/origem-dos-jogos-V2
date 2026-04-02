@@ -1,0 +1,31 @@
+{
+  "name": "1-origem-dos-jogos-v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fabio-S-M-Fernandes/origem-dos-jogos-V2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Fabio-S-M-Fernandes/origem-dos-jogos-V2/issues"
+  },
+  "homepage": "https://github.com/Fabio-S-M-Fernandes/origem-dos-jogos-V2#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "google-auth-library": "^10.6.2",
+    "mysql2": "^3.20.0",
+    "sqlite3": "^6.0.1"
+  }
+}

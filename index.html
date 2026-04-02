@@ -17,6 +17,23 @@
     <a href="index.html" class="logo-link link-externo">
       <img src="logo.png" alt="Logo" class="logo-img">
     </a>
+    <ul class="nav-links">
+      <li><a href="#origem">Origem</a></li>
+      <li><a href="#evolucao">Evolução</a></li>
+      <li><a href="#consoles">Consoles</a></li>
+      <li><a href="#tipos">Gêneros</a></li>
+      <li><a href="#quiz">Quiz</a></li>
+      <li id="user-menu" class="user-menu">
+        <div class="user-avatar-wrapper" id="user-avatar-wrapper" title="Clique para login ou configurações">
+          <img id="user-avatar" class="user-avatar" src="" alt="Avatar do usuário" />
+        </div>
+        <div id="user-dropdown" class="user-dropdown hidden" aria-live="polite">
+          <button id="dropdown-profile" type="button">Perfil</button>
+          <button id="dropdown-settings" type="button">Configurações</button>
+          <button id="dropdown-logout" type="button">Sair</button>
+        </div>
+      </li>
+    </ul>
   </div>
 </nav>
 
@@ -110,18 +127,28 @@
     </div>
     <div id="resultado"></div>
     <button id="btn-proxima" style="display: none; margin-top: 20px;">Próxima Pergunta ➡️</button>
+
+    <div id="quiz-summary" class="quiz-summary hidden">
+      <p id="final-message"></p>  
+      <p id="score-message"></p>
+      <div id="leaderboard" class="leaderboard">
+        <h2>🏅 Top 3</h2>
+        <br>
+        <ol id="top-scores"></ol>
+      </div>
+      <button id="btn-reset" class="btn-reset">Reiniciar Quiz</button>
+    </div>
   </div>
 </section>
 
-<section class="card reveal" id="quiz">
+<section class="card reveal" id="snake">
   <h2>Snake Pro: Evolution Edition</h2>
+  <div style="text-align: center;">
     <a href="jogo/index.html">
       <button class="btn-jogar">Jogar</button>
     </a>
   </div>
 </section>
-
-</main>
 
 <section id="contato" class="card reveal">
   <h2>📩 Entre em Contato</h2>
@@ -151,17 +178,146 @@
   <i class="fas fa-arrow-up"></i>
 </button> 
 
+</main>
+
 <footer>
   <div class="footer-content">
-    <div class="social-links">
-      <a href="https://www.instagram.com/algorithmover/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.linkedin.com/in/fabiosmfernandes-dev/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-      <a href="https://github.com/Fabio-S-M-Fernandes" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+    <div class="footer-widget footer-brand">
+      <img src="logo.png" alt="Logo" class="footer-logo" />
+      <h4>Origem & Evolução dos Jogos</h4>
+      <p>Conteúdo histórico, geek e interativo para gamers que curtem viagem no tempo e nostalgia.</p>
+    </div>
+
+    <div class="footer-widget footer-links">
+      <h4>Seções rápidas</h4>
+      <ul>
+        <li><a href="#origem">Origem</a></li>
+        <li><a href="#evolucao">Evolução</a></li>
+        <li><a href="#consoles">Consoles</a></li>
+        <li><a href="#tipos">Gêneros</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-widget footer-social">
+      <h4>Redes</h4>
+      <div class="social-links">
+        <a href="https://www.instagram.com/algorithmover/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/in/fabiosmfernandes-dev/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/Fabio-S-M-Fernandes" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-widget footer-contact">
+      <h4>Contato</h4>
+      <p><i class="fas fa-envelope"></i> <a href="mailto:contato@seusite.com">contato@seusite.com</a></p>
+      <p><i class="fas fa-map-marker-alt"></i> Brasil</p>
     </div>
   </div>
-  <h3>© 2026 Fábio S. M. Fernandes | Desenvolvedor Web</h3>
+
+  <div class="footer-bottom">
+    <p>© <span id="current-year"></span> Fábio S. M. Fernandes | Desenvolvedor Web</p>
+    <p class="footer-credits">Feito com <i class="fas fa-heart"></i> e código <span class="pulse">gamer</span></p>
+  </div>
 </footer>
 
+<!-- Modals for Login/Register -->
+<div id="login-modal" class="modal">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Login</h2>
+    <form id="login-form" novalidate>
+      <div class="field-group">
+        <label for="login-email">Email</label>
+        <i class="fas fa-envelope icon-inline" aria-hidden="true"></i>
+        <input type="email" id="login-email" placeholder="Digite seu email" required>
+        <span class="error-text"></span>
+      </div>
+      <div class="field-group">
+        <label for="login-password">Senha</label>
+        <i class="fas fa-lock icon-inline" aria-hidden="true"></i>
+        <input type="password" id="login-password" placeholder="Digite sua senha" required>
+        <i class="fas fa-eye toggle-password" data-target="login-password"></i>
+        <span class="error-text"></span>
+      </div>
+      <div class="field-group remember-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="remember-me"> Lembrar-me
+        </label>
+      </div>
+      <button type="submit" class="submit-btn">
+        <span class="btn-text">Entrar</span>
+        <div class="spinner" style="display: none;"></div>
+      </button>
+    </form>
+  <div class="divider"><span>ou</span></div>
+  <button id="google-signin-btn" class="btn-google">Conectar com Google</button>
+  <p class="switch-auth">Não tem conta? <a href="#" id="show-register">Registrar</a></p>
+  </div>
+</div>
+
+<div id="register-modal" class="modal">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Registrar</h2>
+    <form id="register-form" novalidate>
+      <div class="field-group">
+        <label for="register-username">Nome de usuário</label>
+        <i class="fas fa-user icon-inline" aria-hidden="true"></i>
+        <input type="text" id="register-username" placeholder="Escolha um nome" required>
+        <span class="error-text"></span>
+      </div>
+      <div class="field-group">
+        <label for="register-email">Email</label>
+        <i class="fas fa-envelope icon-inline" aria-hidden="true"></i>
+        <input type="email" id="register-email" placeholder="Digite seu email" required>
+        <span class="error-text"></span>
+      </div>
+      <div class="field-group">
+        <label for="register-password">Senha</label>
+        <i class="fas fa-lock icon-inline" aria-hidden="true"></i>
+        <input type="password" id="register-password" placeholder="Crie uma senha forte" required>
+        <i class="fas fa-eye toggle-password" data-target="register-password"></i>
+        <span class="error-text"></span>
+      </div>
+      <button type="submit" class="submit-btn">
+        <span class="btn-text">Registrar</span>
+        <div class="spinner" style="display: none;"></div>
+      </button>
+    </form>
+    <p class="switch-auth">Já tem conta? <a href="#" id="show-login">Login</a></p>
+  </div>
+</div>
+
+<div id="profile-modal" class="modal">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Perfil</h2>
+    <div id="profile-info"></div>
+    <div class="field-group">
+      <label for="profile-avatar-file">Foto de perfil (upload)</label>
+      <input type="file" id="profile-avatar-file" accept="image/*" />
+      <small>Escolha um arquivo JPG/PNG e ele será usado como avatar.</small>
+      <div id="upload-status" class="upload-status"></div>
+    </div>
+    <div class="field-group">
+      <label for="profile-avatar-url">URL da sua foto de perfil (Google/externa)</label>
+      <input type="text" id="profile-avatar-url" placeholder="Cole aqui sua URL de avatar" />
+      <span class="error-text"></span>
+    </div>
+    <div class="field-group">
+      <button id="remove-avatar" type="button" class="btn-secondary">Remover avatar</button>
+    </div>
+    <textarea id="profile-text" placeholder="Atualize seu perfil"></textarea>
+    <button id="update-profile">Atualizar</button>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="script.js"></script>
+
 </body>
 </html>

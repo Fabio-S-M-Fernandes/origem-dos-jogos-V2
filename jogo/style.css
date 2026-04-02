@@ -1,0 +1,330 @@
+        :root {
+        --bg-color: #020617;
+        --card-bg: #0f172a;
+        --border-color: #1e293b;
+        --accent-green: #5b8a2f;
+        --accent-blue: #38bdf8;
+        --text-main: #f8fafc;
+        --text-dim: #94a3b8;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Mudamos de center para flex-start */
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    padding-top: 100px; /* Ajustado */
+    background: #000;
+    color: var(--text-main);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+        /* Barra Superior - Versão Premium Dark */
+/* Barra Superior - Versão Premium Dark */
+.navbar-topo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 85px;
+  /* Fundo preto bem escuro com leve transparência (efeito vidro) */
+  background-color: rgba(0, 0, 0, 0); 
+  backdrop-filter: blur(7px); /* Deixa o fundo levemente embaçado */
+  display: flex;
+  align-items: center;
+  z-index: 2000;
+  border-bottom: 1px solid #1e293b; /* Linha sutil na parte de baixo */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidade */
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* Remove qualquer sublinhado */
+  cursor: pointer;      /* Garante que apareça a mãozinha ao passar o mouse */
+}
+
+.logo-img {
+  height: 60px; /* Tamanho maior que você pediu antes */
+  width: 60px;
+  border-radius: 12px;
+  border: 2px solid #334155;
+  transition: all 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+  border-color: var(--accent); /* Usa o roxo gamer do seu site na borda */
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+/* Ajuste para o conteúdo não subir */
+main {
+  margin-top: 80px;
+}
+
+.status-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px; /* Ajustado */
+    z-index: 10;
+}
+
+        /* Container Principal */
+        .game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 5px 0; /* Ajustado */
+}
+
+        /* Container dos Placares estilo Card */
+        /* Placar Responsivo */
+        .header-ui {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        gap: 10px;
+        margin-bottom: 20px;
+        background: var(--card-bg);
+        padding: 15px;
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        }
+        
+        .score-box {
+            background: rgba(30, 41, 59, 0.9);
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            text-align: center;
+            min-width: 90px;
+        }
+        .label { 
+        font-size: 0.65rem; 
+        color: var(--text-dim); 
+        text-transform: uppercase; 
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        }
+
+        .value { font-size: 1.4rem; font-weight: 800; }
+
+        /* Botões em Grade */
+        .controls-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+        width: 100%;
+        margin-bottom: 20px;
+        }
+        
+        .score-box { text-align: center; flex: 1; }
+        .label { font-size: clamp(0.6rem, 2vw, 0.7rem); color: var(--text-dim); text-transform: uppercase; font-weight: 600; }
+        .value { font-size: clamp(1rem, 4vw, 1.4rem); font-weight: 800; display: block; }
+
+/* Deixando o botão de voltar mais elegante e menor para o topo */
+.btn-voltar {
+    background: rgba(138, 43, 226, 0.2);
+    color: #ffffff;
+    padding: 20px 20px;
+    border: 2px solid #8a2be2;
+    border-radius: 100px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.btn-voltar:hover {
+    background: #8a2be2;
+    color: white;
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
+    transform: translateX(-5px); /* Pequeno efeito de movimento ao voltar */
+}
+        
+        .ui-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(2, 6, 23, 0.85);
+        backdrop-filter: blur(4px);
+        z-index: 10;
+        }
+
+        .hidden { display: none; }
+
+        h1 { font-weight: 900; text-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+
+    button {
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        background: var(--card-bg);
+        color: var(--text-main);
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover { background: #1e293b; transform: translateY(-2px); }
+
+    .btn-ranking { background: linear-gradient(135deg, #22c55e, #16a34a); border: none; }
+
+    #game-container {
+    position: relative;
+    width: 100%;
+    /* O espaçamento que você pediu entre a borda e o jogo */
+    padding: 20px; 
+    background-color: #070b14;
+    /* Mapa de fundo (Grade Tecnológica) */
+    background-image: 
+    linear-gradient(rgba(168, 85, 247, 0.05) 1px, transparent 1px), /* Mude o RGBA para a cor desejada */
+    linear-gradient(90deg, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px; /* Alinhado com o 'box' do jogo */
+    
+    border-radius: 24px;
+    border: 3px solid #00ff5e; /* Cor inicial */
+    animation: borderRGB 8s linear infinite; /* 8 segundos para dar a volta nas cores */
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.8), 0 0 15px rgba(56, 189, 248, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+@keyframes borderRGB {
+    0%   { border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); } /* Vermelho */
+    10%  { border-color: #ff8000; } /* Laranja */
+    20%  { border-color: #ffff00; } /* Amarelo */
+    30%  { border-color: #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); } /* Verde */
+    40%  { border-color: #38bdf8; } /* Azul */
+    50% { border-color: #ffffff; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); } /* Volta pro Vermelho */
+    60%   { border-color: #001eff; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); } /* Vermelho */
+    70%  { border-color: #8800ff; } /* Laranja */
+    80%  { border-color: #5100ff; } /* Amarelo */
+    90%  { border-color: #ff0059; box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); } /* Verde */
+    100% { border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); } /* Volta pro Vermelho */
+}
+
+canvas {
+    /* Moldura do campo de batalha */
+    border: 2px solid rgb(255, 255, 255);
+    background: #000000;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.774);
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Efeito de Scanline (Linhas de TV antiga) para dar estilo */
+#game-container::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 3px 100%;
+    pointer-events: none; /* Deixa os cliques passarem direto */
+    z-index: 5;
+}
+
+/* O fundo escuro que cobre a tela toda */
+#ranking-modal {
+    display: none; /* O JS vai mudar isso para 'flex' */
+    position: fixed;
+    inset: 0; /* Cobre tudo: top, bottom, left, right: 0 */
+    background: rgba(0, 0, 0, 0.85); /* Fundo bem dark */
+    backdrop-filter: blur(8px); /* Efeito de desfoque no fundo */
+    z-index: 3000; /* MAIOR que a nav (que é 2000) */
+    
+    /* Centralização perfeita */
+    display: none; 
+    align-items: center;
+    justify-content: center;
+}
+
+/* A caixa do Ranking em si */
+.modal-content {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 40px rgb(255, 255, 255);
+    position: relative;
+    /* Removemos margens fixas para o flex do pai centralizar */
+    margin: 0; 
+}
+
+    .ranking-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #ffffff;
+        font-size: 1.1rem;
+    }
+
+    .hidden { display: none !important; }
+
+    .ranking-item:last-child { border-bottom: none; }
+
+    .rank-pos { color: var(--accent-blue); font-weight: bold; }
+    .rank-score { color: var(--accent-green); font-weight: 800; }
+
+    .off { opacity: 0.5; color: var(--text-dim); }
+
+    .skin-controls {
+        display: flex;
+        gap: 60px;
+        justify-content: center;
+        background: var(--card-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 20px;
+        width: 100%;
+        display: flex;
+        gap: 40px; /* Aumentei o espaço entre a cor da cabeça e do corpo */
+        padding: 20px; /* Mais preenchimento interno */
+    }
+
+    .skin-controls label { 
+        font-size: 0.8rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 5px; 
+        cursor: pointer; 
+        font-weight: 600;
+    }
+
+    input[type="color"] { 
+        border: none; 
+        border-radius: 6px; 
+        width: 35px; 
+        height: 35px; 
+        cursor: pointer; 
+        background: none; 
+    }
+
+    input[type="color"]::-webkit-color-swatch { border-radius: 6px; border: 2px solid var(--border-color); }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configurações - Origem & Evolução dos Jogos</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="logo.png" type="image/png">
+</head>
+<body>
+  <div id="shared-header"></div>
+
+  <main class="card" style="margin: 120px 2rem 2rem;">
+    <h1>Configurações</h1>
+    <p>Esta página é para configurar preferências do usuário.</p>
+    <section>
+      <h2>Preferências iniciais</h2>
+      <form id="settings-form">
+        <label>
+          <input type="checkbox" id="dark-mode" /> Ativar modo escuro
+        </label>
+        <br />
+        <label>
+          <input type="checkbox" id="enable-notifications" /> Receber notificações
+        </label>
+        <br />
+        <button type="submit">Salvar</button>
+      </form>
+      <div id="settings-message"></div>
+    </section>
+  </main>
+
+  <div id="shared-footer"></div>
+
+  <script src="layout.js"></script>
+  <script>
+    const settingsForm = document.getElementById('settings-form');
+    if (settingsForm) {
+      const saved = JSON.parse(localStorage.getItem('userSettings') || '{}');
+      document.getElementById('dark-mode').checked = Boolean(saved.darkMode);
+      document.getElementById('enable-notifications').checked = Boolean(saved.notifications);
+
+      settingsForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const darkMode = document.getElementById('dark-mode').checked;
+        const notifications = document.getElementById('enable-notifications').checked;
+        localStorage.setItem('userSettings', JSON.stringify({ darkMode, notifications }));
+        document.getElementById('settings-message').textContent = 'Preferências salvas!';
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil do Usuário - Origem & Evolução dos Jogos</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="icon" href="logo.png" type="image/png">
+</head>
+<body>
+  <div id="shared-header"></div>
+
+  <main class="card" style="margin: 120px 2rem 2rem;">
+    <h1>Perfil do Usuário</h1>
+    <p>Esta é a página dedicada ao perfil do usuário.</p>
+    <p>Aqui você pode ver suas informações, editar seu avatar e texto de perfil.</p>
+    <p>O sistema ainda usa login local com armazenamento em <code>localStorage</code>.</p>
+    <section>
+      <h2>Dados do Perfil</h2>
+      <div id="profile-container">Carregando...</div>
+    </section>
+  </main>
+
+  <div id="shared-footer"></div>
+
+  <script src="layout.js"></script>
+  <script>
+    function renderProfilePage() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const profileContainer = document.getElementById('profile-container');
+      if (!profileContainer) return;
+      if (!user) {
+        profileContainer.innerHTML = '<p>Você não está logado. <a href="index.html">Volte e faça login</a>.</p>';
+        return;
+      }
+      profileContainer.innerHTML = `
+        <div class="card" style="padding: 18px;">
+          <img src="${user.avatar || user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.username || 'Guest') + '&background=6648ff&color=fff'}" alt="Avatar" style="width:128px;height:128px;border-radius:50%;display:block;margin-bottom:16px;" />
+          <p><strong>Usuário:</strong> ${user.username || 'N/A'}</p>
+          <p><strong>Email:</strong> ${user.email || 'N/A'}</p>
+          <p><strong>Sobre:</strong> ${user.profile || 'Nenhum texto de perfil salvo.'}</p>
+        </div>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', renderProfilePage);
+  </script>
+</body>
+</html>
