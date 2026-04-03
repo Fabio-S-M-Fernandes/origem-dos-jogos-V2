@@ -1,455 +1,907 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="../logo.png" type="image/png">
-    <link rel="stylesheet" href="style.css">
-    <title>Snake Pro: Evolution Edition</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake Pro: Evolution Edition</title>
+  <link rel="icon" href="../logo.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <link rel="icon" href="../logo.png" type="image/png">
+  <nav class="navbar-topo">
+    <div class="nav-container">
+      <a href="../index.html" class="logo-link" aria-label="Voltar para a pagina principal">
+        <img src="../logo.png" alt="Logo do projeto" class="logo-img" />
+      </a>
 
-    <nav class="navbar-topo">
-        <div class="nav-container">
-            <a href="../index.html" class="logo-link">
-                <img src="../logo.png" alt="Logo" class="logo-img">
-            </a>
+      <div class="nav-brand">
+        <span class="nav-eyebrow">Origem &amp; Evolucao</span>
+        <strong>Snake Pro</strong>
+      </div>
+
+      <div class="nav-actions">
+        <a href="#arena" class="nav-pill">Arena</a>
+        <a href="#guia" class="nav-pill">Guia</a>
+        <button id="nav-ranking-btn" class="nav-pill nav-pill-button" type="button">Ranking</button>
+        <a href="../index.html#snake" class="nav-return">Voltar ao site</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="game-page">
+    <section class="hero-panel">
+      <div class="hero-copy">
+        <span class="section-kicker">Arcade renovado</span>
+        <h1>Snake Pro: Evolution Edition</h1>
+        <p class="hero-text">
+          A pagina do jogo agora conversa com o resto do site: mesma atmosfera, mais organizacao,
+          acoes claras e um painel lateral para deixar a experiencia mais bonita e intuitiva.
+        </p>
+
+        <div class="hero-highlights">
+          <article class="highlight-card">
+            <span class="highlight-label">Progressao</span>
+            <strong>+1 nivel a cada 50 pontos</strong>
+            <p>A velocidade aumenta e novos obstaculos entram em cena para manter a tensao.</p>
+          </article>
+
+          <article class="highlight-card">
+            <span class="highlight-label">Ranking local</span>
+            <strong>Top 5 salvo no navegador</strong>
+            <p>Seu recorde fica guardado para voce voltar e tentar subir ainda mais.</p>
+          </article>
+
+          <article class="highlight-card">
+            <span class="highlight-label">Visual customizavel</span>
+            <strong>Escolha a cor do corpo</strong>
+            <p>Personalize a cobra sem abrir mao do estilo neon da pagina principal.</p>
+          </article>
         </div>
-    </nav>
+      </div>
 
-    <div class="game-wrapper">
-    <div class="header-ui">
-        <div class="score-box"><span class="label"><strong>Pontos</strong></span><span id="score-val" class="value" style="color: var(--accent-green)">0</span></div>
-        <div class="score-box"><span class="label"><strong>Nível</strong></span><span id="level-val" class="value" style="color: var(--accent-blue)">1</span></div>
-        <div class="score-box"><span class="label"><strong>Recorde</strong></span><span id="high-val" class="value" style="color: #fbbf24">0</span></div>
-    </div>
-
-    <div class="controls-row">
-        <button id="btn-music" onclick="toggleMusic()">🎵 Música: ON</button>
-        <button id="btn-sounds" onclick="toggleSounds()">🔊 Efeitos: ON</button>
-        <button class="btn-ranking" onclick="showRanking()">🏆 RANKING</button>
-    </div>
-
-    <div class="skin-controls">
-        <label>Cor do Corpo: <input type="color" id="body-color" value="#166534" onchange="updateSkin()"></label>
-    </div>
-
-    <div id="game-container">
-        <canvas id="snakeGame" width="600" height="400"></canvas>
-        <div id="overlay" class="ui-overlay">
-            <h1 id="status-title" style="color: var(--accent-green);">SNAKE PRO</h1>
-            <p id="status-msg">Pressione <strong style="color:rgb(255, 255, 0)">Espaço OU Escape</strong> para decolar</p>
+      <aside class="hero-side">
+        <div class="hero-status-card">
+          <p class="hero-status-label">Status da partida</p>
+          <strong id="status-badge" class="status-badge" data-state="waiting">Em espera</strong>
+          <p id="status-detail" class="hero-status-detail">
+            Use o botao de iniciar ou pressione Espaco para entrar na arena.
+          </p>
         </div>
-    </div>
-</div>
 
-<div id="ranking-modal" class="ui-overlay hidden">
-    <div class="modal-content">
-        <h2 style="color: #fbbf24; margin-top: 0;">🏆 TOP 5</h2>
-        <div id="ranking-list"></div>
-        <button class="btn-ranking" onclick="closeRanking()" style="margin-top: 20px; width: 100%;">FECHAR</button>
-    </div>
-</div>
+        <div class="hero-facts">
+          <div class="hero-fact">
+            <span>Objetivo</span>
+            <strong>Comer, crescer e sobreviver</strong>
+          </div>
+          <div class="hero-fact">
+            <span>Ritmo</span>
+            <strong>Partidas rapidas e intensas</strong>
+          </div>
+          <div class="hero-fact">
+            <span>Desafio</span>
+            <strong>Campo fechado com obstaculos</strong>
+          </div>
+        </div>
+      </aside>
+    </section>
 
-    </div>
-        <audio id="eatSound" src="eat.mp3"></audio>
-        <audio id="levelSound" src="level.mp3"></audio>
-        <audio id="crashSound" src="crash.mp3"></audio>
-        <audio id="bgMusic" src="music.mp3" loop></audio>
-<script>
+    <section id="arena" class="arena-layout">
+      <div class="game-column">
+        <article class="glass-panel">
+          <div class="panel-head">
+            <div>
+              <p class="section-kicker">Arena principal</p>
+              <h2>Sua partida, agora bem mais organizada</h2>
+            </div>
+            <span class="live-badge">Modo arcade</span>
+          </div>
 
-// No seu script.js, garanta que ele ignore links com a classe 'link-externo'
-document.querySelectorAll("nav a:not(.link-externo)").forEach(link => {
-  link.addEventListener("click", e => {
-    const href = link.getAttribute("href");
-    if (href.startsWith("#")) { // Só interfere se for link interno da página
-      e.preventDefault();
-      document.querySelector(href).scrollIntoView({ behavior: "smooth" });
+          <div class="header-ui">
+            <div class="score-box">
+              <span class="label">Pontos</span>
+              <span id="score-val" class="value value-score">0</span>
+            </div>
+            <div class="score-box">
+              <span class="label">Nivel</span>
+              <span id="level-val" class="value value-level">1</span>
+            </div>
+            <div class="score-box">
+              <span class="label">Recorde</span>
+              <span id="high-val" class="value value-record">0</span>
+            </div>
+          </div>
+
+          <div class="progress-card">
+            <div class="progress-head">
+              <span>Proximo nivel</span>
+              <strong id="level-progress-text">50 pts para subir</strong>
+            </div>
+            <div class="progress-track">
+              <span id="level-progress-fill"></span>
+            </div>
+          </div>
+
+          <div class="action-grid">
+            <button id="btn-start" class="btn-primary" type="button">Iniciar partida</button>
+            <button id="btn-pause" class="btn-secondary" type="button" disabled>Pausar partida</button>
+            <button id="btn-ranking" class="btn-ranking" type="button">Abrir ranking</button>
+          </div>
+
+          <div class="controls-row">
+            <button id="btn-music" class="toggle-button" type="button">Musica: ON</button>
+            <button id="btn-sounds" class="toggle-button" type="button">Efeitos: ON</button>
+          </div>
+
+          <div class="custom-card">
+            <div class="custom-copy">
+              <p class="section-kicker">Personalizacao</p>
+              <h3>Visual da cobra</h3>
+              <p>Troque a cor do corpo e deixe a arena com a sua cara.</p>
+            </div>
+
+            <div class="skin-controls">
+              <label class="picker-label" for="body-color">
+                <span>Cor do corpo</span>
+                <input type="color" id="body-color" value="#166534" />
+              </label>
+
+              <div class="picker-preview">
+                <span id="body-color-preview" class="picker-dot"></span>
+                <strong id="body-color-value">#166534</strong>
+              </div>
+            </div>
+          </div>
+
+          <div id="game-container">
+            <div class="arena-frame">
+              <canvas id="snakeGame" width="600" height="400"></canvas>
+            </div>
+
+            <div id="overlay" class="ui-overlay">
+              <h2 id="status-title">SNAKE PRO</h2>
+              <p id="status-msg">Pressione Espaco ou use o botao Iniciar para comecar.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <aside id="guia" class="info-column">
+        <article class="info-card">
+          <p class="section-kicker">Como jogar</p>
+          <h3>Fluxo rapido da partida</h3>
+          <ul class="info-list">
+            <li>Coma as frutas para ganhar 10 pontos por captura.</li>
+            <li>A cada 50 pontos voce sobe de nivel e a velocidade aumenta.</li>
+            <li>Evite as bordas, o proprio corpo e os obstaculos da arena.</li>
+          </ul>
+        </article>
+
+        <article class="info-card">
+          <p class="section-kicker">Atalhos</p>
+          <h3>Controle no teclado</h3>
+          <div class="key-grid">
+            <div class="key-card">
+              <kbd>Espaco</kbd>
+              <span>Iniciar partida</span>
+            </div>
+            <div class="key-card">
+              <kbd>Esc</kbd>
+              <span>Pausar ou retomar</span>
+            </div>
+            <div class="key-card">
+              <kbd>Setas</kbd>
+              <span>Mover a cobra</span>
+            </div>
+            <div class="key-card">
+              <kbd>Top 5</kbd>
+              <span>Ranking local</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <p class="section-kicker">Ranking local</p>
+          <h3>Melhores partidas</h3>
+          <ul id="ranking-preview-list" class="ranking-preview-list" aria-live="polite"></ul>
+          <button id="btn-open-preview-ranking" class="btn-ghost" type="button">Ver top 5 completo</button>
+        </article>
+
+        <article class="info-card">
+          <p class="section-kicker">Dicas</p>
+          <h3>Jogue melhor</h3>
+          <div class="tip-chips">
+            <span class="tip-chip">Mantenha curvas largas</span>
+            <span class="tip-chip">Nao feche a propria rota</span>
+            <span class="tip-chip">Antecipe os obstaculos</span>
+            <span class="tip-chip">Use a pausa para respirar</span>
+          </div>
+        </article>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="rodape">
+    <div class="footer-content">
+      <div class="footer-widget footer-brand">
+        <img src="../logo.png" alt="Logo do projeto" class="footer-logo" />
+        <h4>Origem &amp; Evolucao dos Jogos</h4>
+        <p>Conteudo historico, geek e interativo para gamers que curtem nostalgia e boas interfaces.</p>
+      </div>
+
+      <div class="footer-widget footer-social">
+        <h4>Redes</h4>
+        <div class="social-links">
+          <a href="https://www.instagram.com/algorithmover/" target="_blank" rel="noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/in/fabiosmfernandes-dev/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://github.com/Fabio-S-M-Fernandes" target="_blank" rel="noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-widget footer-contact">
+        <h4>Contato</h4>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:contato@seusite.com">contato@seusite.com</a></p>
+        <p><i class="fas fa-map-marker-alt"></i> Brasil</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; <span id="current-year"></span> Fabio S. M. Fernandes | Desenvolvedor Web</p>
+      <p class="footer-credits">Feito com <i class="fas fa-heart"></i> e codigo <span class="pulse">gamer</span></p>
+    </div>
+  </footer>
+
+  <div id="ranking-modal" class="modal-shell hidden" aria-hidden="true">
+    <button class="modal-backdrop" type="button" data-close-ranking="true" aria-label="Fechar ranking"></button>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="ranking-modal-title">
+      <div class="modal-head">
+        <div>
+          <p class="section-kicker">Ranking local</p>
+          <h3 id="ranking-modal-title">Top 5 da arena</h3>
+        </div>
+        <button id="btn-close-ranking-top" class="icon-close" type="button" aria-label="Fechar ranking">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="ranking-list" class="ranking-list"></div>
+      <button id="btn-close-ranking" class="btn-ranking modal-close" type="button">Fechar</button>
+    </div>
+  </div>
+
+  <audio id="eatSound" src="eat.mp3"></audio>
+  <audio id="levelSound" src="level.mp3"></audio>
+  <audio id="crashSound" src="crash.mp3"></audio>
+  <audio id="bgMusic" src="music.mp3" loop></audio>
+
+  <script>
+    const canvas = document.getElementById("snakeGame");
+    const ctx = canvas.getContext("2d");
+
+    const scoreVal = document.getElementById("score-val");
+    const highVal = document.getElementById("high-val");
+    const levelVal = document.getElementById("level-val");
+    const overlay = document.getElementById("overlay");
+    const statusTitle = document.getElementById("status-title");
+    const statusMsg = document.getElementById("status-msg");
+    const statusBadge = document.getElementById("status-badge");
+    const statusDetail = document.getElementById("status-detail");
+    const levelProgressText = document.getElementById("level-progress-text");
+    const levelProgressFill = document.getElementById("level-progress-fill");
+
+    const btnStart = document.getElementById("btn-start");
+    const btnPause = document.getElementById("btn-pause");
+    const btnMusic = document.getElementById("btn-music");
+    const btnSounds = document.getElementById("btn-sounds");
+    const btnRanking = document.getElementById("btn-ranking");
+    const btnOpenPreviewRanking = document.getElementById("btn-open-preview-ranking");
+    const navRankingBtn = document.getElementById("nav-ranking-btn");
+
+    const rankingModal = document.getElementById("ranking-modal");
+    const rankingList = document.getElementById("ranking-list");
+    const rankingPreviewList = document.getElementById("ranking-preview-list");
+
+    const bodyColorInput = document.getElementById("body-color");
+    const bodyColorPreview = document.getElementById("body-color-preview");
+    const bodyColorValue = document.getElementById("body-color-value");
+
+    const eatSound = document.getElementById("eatSound");
+    const levelSound = document.getElementById("levelSound");
+    const crashSound = document.getElementById("crashSound");
+    const bgMusic = document.getElementById("bgMusic");
+
+    let musicEnabled = true;
+    let soundsEnabled = true;
+
+    bgMusic.volume = 0.3;
+    eatSound.volume = 0.6;
+    levelSound.volume = 0.6;
+    crashSound.volume = 0.8;
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    const box = 20;
+    let score = 0;
+    let level = 1;
+    let gameRunning = false;
+    let isPaused = false;
+    let snake = [];
+    let direction = "RIGHT";
+    let food = null;
+    let gameLoop = null;
+    let currentSpeed = 120;
+    let obstacles = [];
+
+    const headColor = "#22c55e";
+    let bodyColor = localStorage.getItem("snakeBodyColor") || "#166534";
+    let highscore = Number(localStorage.getItem("snakeRecorde")) || 0;
+
+    highVal.textContent = String(highscore);
+    bodyColorInput.value = bodyColor;
+    document.getElementById("current-year").textContent = String(new Date().getFullYear());
+
+    function setSessionState(state) {
+      const states = {
+        waiting: {
+          badge: "Em espera",
+          detail: "Use o botao de iniciar ou pressione Espaco para entrar na arena."
+        },
+        playing: {
+          badge: "Em jogo",
+          detail: "A arena esta ativa. Desvie dos obstaculos e faca seu melhor recorde."
+        },
+        paused: {
+          badge: "Pausado",
+          detail: "A partida foi pausada. Quando quiser, retome exatamente de onde parou."
+        },
+        over: {
+          badge: "Game over",
+          detail: "Seu resultado foi salvo no ranking local. Tente superar o proprio recorde."
+        }
+      };
+
+      const config = states[state] || states.waiting;
+      statusBadge.textContent = config.badge;
+      statusBadge.dataset.state = state;
+      statusDetail.textContent = config.detail;
+
+      btnPause.disabled = !gameRunning;
+      btnPause.textContent = isPaused ? "Retomar partida" : "Pausar partida";
+      btnStart.textContent = gameRunning ? "Reiniciar partida" : state === "over" ? "Jogar novamente" : "Iniciar partida";
     }
-  });
-});
 
-        const canvas = document.getElementById("snakeGame");
-const ctx = canvas.getContext("2d");
-const scoreVal = document.getElementById("score-val");
-const highVal = document.getElementById("high-val");
-const levelVal = document.getElementById("level-val");
-const overlay = document.getElementById("overlay");
-const statusTitle = document.getElementById("status-title");
+    function setOverlayState(title, message, color) {
+      statusTitle.textContent = title;
+      statusTitle.style.color = color;
+      statusMsg.textContent = message;
+    }
 
-const eatSound = document.getElementById("eatSound");
-const levelSound = document.getElementById("levelSound");
-const crashSound = document.getElementById("crashSound");
-const bgMusic = document.getElementById("bgMusic");
+    function updateLevelProgress() {
+      const cycleScore = score % 50;
+      const remaining = cycleScore === 0 && score > 0 ? 50 : 50 - cycleScore;
+      const fill = cycleScore === 0 && score > 0 ? 0 : (cycleScore / 50) * 100;
 
-// Variáveis de controle de som
-let musicEnabled = true;
-let soundsEnabled = true;
+      levelProgressText.textContent = remaining + " pts para subir";
+      levelProgressFill.style.width = fill + "%";
+    }
 
-bgMusic.volume = 0.3;
-eatSound.volume = 0.6;
-levelSound.volume = 0.6;
-crashSound.volume = 0.8;
+    function updateUI() {
+      scoreVal.textContent = String(score);
+      levelVal.textContent = String(level);
+      highVal.textContent = String(highscore);
+      updateLevelProgress();
+    }
 
-function toggleMusic() {
-    musicEnabled = !musicEnabled;
-    const btn = document.getElementById("btn-music");
-    if (musicEnabled) {
-        btn.innerText = "🎵 Música: ON";
-        btn.classList.remove("off");
-        if (gameRunning) bgMusic.play().catch(() => {});
-    } else {
-        btn.innerText = "🎵 Música: OFF";
-        btn.classList.add("off");
+    function updateSkin() {
+      bodyColor = bodyColorInput.value;
+      localStorage.setItem("snakeBodyColor", bodyColor);
+      bodyColorPreview.style.background = bodyColor;
+      bodyColorValue.textContent = bodyColor.toUpperCase();
+    }
+
+    function toggleMusic() {
+      musicEnabled = !musicEnabled;
+      btnMusic.textContent = musicEnabled ? "Musica: ON" : "Musica: OFF";
+      btnMusic.classList.toggle("off", !musicEnabled);
+
+      if (!musicEnabled) {
         bgMusic.pause();
+        return;
+      }
+
+      if (gameRunning && !isPaused) {
+        bgMusic.play().catch(() => {});
+      }
     }
-}
 
-function toggleSounds() {
-    soundsEnabled = !soundsEnabled;
-    const btn = document.getElementById("btn-sounds");
-    if (soundsEnabled) {
-        btn.innerText = "🔊 Efeitos: ON";
-        btn.classList.remove("off");
-    } else {
-        btn.innerText = "🔊 Efeitos: OFF";
-        btn.classList.add("off");
+    function toggleSounds() {
+      soundsEnabled = !soundsEnabled;
+      btnSounds.textContent = soundsEnabled ? "Efeitos: ON" : "Efeitos: OFF";
+      btnSounds.classList.toggle("off", !soundsEnabled);
+      eatSound.muted = !soundsEnabled;
+      levelSound.muted = !soundsEnabled;
+      crashSound.muted = !soundsEnabled;
     }
-    eatSound.muted = !soundsEnabled;
-    levelSound.muted = !soundsEnabled;
-    crashSound.muted = !soundsEnabled;
-}
 
-// Sistema de Skins
-let headColor = localStorage.getItem("snakeHeadColor") || "#22c55e";
-let bodyColor = localStorage.getItem("snakeBodyColor") || "#166534";
+    function getStoredScores() {
+      const raw = JSON.parse(localStorage.getItem("snakeRanking")) || [];
+      return raw
+        .map(value => Number(value))
+        .filter(value => Number.isFinite(value) && value > 0)
+        .sort((a, b) => b - a)
+        .slice(0, 5);
+    }
 
-document.getElementById("body-color").value = bodyColor;
+    function renderRankingPreview() {
+      const scores = getStoredScores();
+      rankingPreviewList.innerHTML = "";
 
-function updateSkin() {
-    bodyColor = document.getElementById("body-color").value;
-    localStorage.setItem("snakeHeadColor", headColor);
-    localStorage.setItem("snakeBodyColor", bodyColor);
-}
+      if (!scores.length) {
+        const emptyItem = document.createElement("li");
+        emptyItem.className = "ranking-preview-empty";
+        emptyItem.textContent = "Nenhuma partida salva ainda.";
+        rankingPreviewList.appendChild(emptyItem);
+        return;
+      }
 
-// Lógica do Jogo
-const box = 20;
-let score = 0, level = 1, gameRunning = false, isPaused = false;
-let snake, direction, food, gameLoop;
-let currentSpeed = 120;
-let obstacles = []; // Apenas obstáculos agora!
+      scores.slice(0, 3).forEach((value, index) => {
+        const item = document.createElement("li");
+        item.className = "ranking-preview-item";
+        item.innerHTML = "<span>#" + (index + 1) + "</span><strong>" + value + " pts</strong>";
+        rankingPreviewList.appendChild(item);
+      });
+    }
 
-let highscore = localStorage.getItem("snakeRecorde") || 0;
-highVal.innerText = highscore;
+    function renderRankingModal() {
+      const scores = getStoredScores();
+      rankingList.innerHTML = "";
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (!scores.length) {
+        const emptyState = document.createElement("p");
+        emptyState.className = "ranking-empty";
+        emptyState.textContent = "Nenhum recorde ainda. Hora de abrir a primeira partida.";
+        rankingList.appendChild(emptyState);
+        return;
+      }
 
-function initGame() {
-    score = 0; level = 1; currentSpeed = 120;
-    updateUI();
-    direction = "RIGHT"; isPaused = false;
-    snake = [{x: 10*box, y: 10*box}, {x: 9*box, y: 10*box}, {x: 8*box, y: 10*box}];
-    spawnFood();
-    spawnObstacles(); // Cria as paredes do nível 1
-    
-    gameRunning = true;
-    overlay.classList.add("hidden");
-    if (musicEnabled) bgMusic.play().catch(() => {});
-    startLoop();
-}
+      scores.forEach((value, index) => {
+        const item = document.createElement("div");
+        item.className = "ranking-item";
+        item.innerHTML = "<span class=\"rank-pos\">#" + (index + 1) + "</span><span class=\"rank-score\">" + value + " pts</span>";
+        rankingList.appendChild(item);
+      });
+    }
 
-function startLoop() {
-    if(gameLoop) clearInterval(gameLoop);
-    gameLoop = setInterval(draw, currentSpeed);
-}
+    function showRanking() {
+      renderRankingModal();
+      rankingModal.classList.remove("hidden");
+      rankingModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+    }
 
-function updateUI() {
-    scoreVal.innerText = score;
-    levelVal.innerText = level;
-}
+    function closeRanking() {
+      rankingModal.classList.add("hidden");
+      rankingModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+    }
 
-function spawnFood() {
-    food = {
+    function saveScore(finalScore) {
+      if (finalScore <= 0) {
+        renderRankingPreview();
+        return;
+      }
+
+      const scores = getStoredScores();
+      scores.push(finalScore);
+      scores.sort((a, b) => b - a);
+      localStorage.setItem("snakeRanking", JSON.stringify(scores.slice(0, 5)));
+      renderRankingPreview();
+    }
+
+    function randomCell() {
+      return {
         x: Math.floor(Math.random() * (canvas.width / box)) * box,
         y: Math.floor(Math.random() * (canvas.height / box)) * box
-    };
-    // Impede que a comida nasça em cima de um obstáculo
-    if (obstacles.some(o => o.x === food.x && o.y === food.y)) {
-        spawnFood(); 
-    }
-}
-
-function spawnObstacles() {
-    obstacles = [];
-    const qty = Math.min(level - 1, 15); // Aumenta os obstáculos a cada nível
-    for(let i = 0; i < qty; i++) {
-        let obs = {
-            x: Math.floor(Math.random() * (canvas.width / box)) * box,
-            y: Math.floor(Math.random() * (canvas.height / box)) * box
-        };
-        // Evita que obstáculo nasça em cima da cobra
-        if(!snake.some(p => p.x === obs.x && p.y === obs.y)) {
-            obstacles.push(obs);
-        }
-    }
-}
-
-// Monitora se o usuário mudou de aba ou minimizou a janela
-// (ou atuam como pausa automática)
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden && gameRunning && !isPaused) {
-        isPaused = true;
-        overlay.classList.remove("hidden");
-        statusTitle.innerText = "PAUSADO";
-        statusTitle.style.color = "#fbbf24";
-        if (musicEnabled) {
-            bgMusic.pause();
-        }
-    }
-});
-
-// Controles de teclado
-document.addEventListener("keydown", (e) => {
-    const keysToBlock = ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-    if (keysToBlock.includes(e.code)) {
-        e.preventDefault();
+      };
     }
 
-    // Iniciar/Continuar Jogo com Espaço
-    if (e.code === "Space" && !gameRunning) {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        initGame();
-        return;
+    function isSnakeCell(cell) {
+      return snake.some(segment => segment.x === cell.x && segment.y === cell.y);
     }
 
-    // Pausar/Continuar Jogo com Esc
-    if (e.code === "Escape" && gameRunning) {
-        isPaused = !isPaused;
-        overlay.classList.toggle("hidden");
-        statusTitle.innerText = isPaused ? "PAUSADO" : "SNAKE PRO";
-        statusTitle.style.color = isPaused ? "#fbbf24" : "#10b981";
-        if (isPaused) {
-            bgMusic.pause();
-        } else if (musicEnabled) {
-            bgMusic.play().catch(() => {});
-        }
-        return;
+    function isObstacleCell(cell) {
+      return obstacles.some(obstacle => obstacle.x === cell.x && obstacle.y === cell.y);
     }
 
-    if (!isPaused && gameRunning) {
-        if (e.code === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
-        else if (e.code === "ArrowUp" && direction !== "DOWN") direction = "UP";
-        else if (e.code === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
-        else if (e.code === "ArrowDown" && direction !== "UP") direction = "DOWN";
-    }
-});
+    function spawnFood() {
+      let nextFood = randomCell();
+      let attempts = 0;
 
-function draw() {
-    if(isPaused || !gameRunning) return;
-    
-    // Fundo preto absoluto para o canvas brilhar
-    ctx.fillStyle = "#000000"; 
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Desenha uma grade bem fininha DENTRO do canvas
-    ctx.strokeStyle = "rgba(56, 189, 248, 0.05)"; // Azul bem transparente
-    ctx.lineWidth = 0.5;
-    for(let i = 0; i <= canvas.width; i += box) {
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
-    }
-    for(let j = 0; j <= canvas.height; j += box) {
-        ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+      while ((isSnakeCell(nextFood) || isObstacleCell(nextFood)) && attempts < 500) {
+        nextFood = randomCell();
+        attempts += 1;
+      }
+
+      food = nextFood;
     }
 
-    // 1. Desenhar Obstáculos (Paredes)
-    obstacles.forEach(obs => {
-        ctx.fillStyle = "#334155";
-        ctx.beginPath();
-        ctx.roundRect(obs.x + 1, obs.y + 1, box - 2, box - 2, 4);
-        ctx.fill();
-        ctx.fillStyle = "#475569";
-        ctx.fillRect(obs.x + 4, obs.y + 4, 3, 3);
-    });
-    
-    // 2. Desenhar Maçã Realista
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = "#ef4444";
-    let appleGrad = ctx.createRadialGradient(food.x + box/2, food.y + box/2, 2, food.x + box/2, food.y + box/2, box/2);
-    appleGrad.addColorStop(0, "#fca5a5");
-    appleGrad.addColorStop(1, "#dc2626");
-    
-    ctx.fillStyle = appleGrad;
-    ctx.beginPath(); 
-    ctx.arc(food.x + box/2, food.y + box/2, box/2 - 2, 0, Math.PI*2); 
-    ctx.fill();
-    ctx.shadowBlur = 0;
+    function spawnObstacles() {
+      obstacles = [];
+      const quantity = Math.min(level - 1, 15);
+      let attempts = 0;
 
-    ctx.fillStyle = "#4ade80";
-    ctx.beginPath();
-    ctx.ellipse(food.x + box/2 + 3, food.y + box/2 - 7, 4, 2, Math.PI / 4, 0, Math.PI*2);
-    ctx.fill();
+      while (obstacles.length < quantity && attempts < 500) {
+        const candidate = randomCell();
+        const duplicated = obstacles.some(obstacle => obstacle.x === candidate.x && obstacle.y === candidate.y);
+        const nearSpawn = candidate.y === 10 * box && candidate.x >= 7 * box && candidate.x <= 12 * box;
+        const onSnake = isSnakeCell(candidate);
+        const onFood = food && food.x === candidate.x && food.y === candidate.y;
 
-    // 3. Lógica de Movimento
-    let headX = snake[0].x, headY = snake[0].y;
-    if(direction == "LEFT") headX -= box;
-    if(direction == "UP") headY -= box;
-    if(direction == "RIGHT") headX += box;
-    if(direction == "DOWN") headY += box;
-
-    // Se comeu a comida
-    if(headX == food.x && headY == food.y) {
-        score += 10;
-        if (soundsEnabled) { eatSound.currentTime = 0; eatSound.play().catch(() => {}); }
-        spawnFood();
-        
-        if(score % 50 === 0) {
-            level++;
-            currentSpeed = Math.max(40, currentSpeed - 15);
-            if (soundsEnabled) { levelSound.currentTime = 0; levelSound.play().catch(() => {}); }
-            spawnObstacles(); // Recria as paredes quando muda de nível
-            startLoop();
+        if (!duplicated && !nearSpawn && !onSnake && !onFood) {
+          obstacles.push(candidate);
         }
 
-        if(score > highscore) {
-            highscore = score;
-            highVal.innerText = highscore;
-            localStorage.setItem("snakeRecorde", highscore);
-        }
-        updateUI();
-    } else {
-        snake.pop(); // Remove a cauda se não comeu
+        attempts += 1;
+      }
     }
 
-    let newHead = { x: headX, y: headY };
-
-    // 4. Checagem de Colisão (Paredes, Próprio Corpo ou Obstáculos)
-    const hitObstacle = obstacles.some(o => o.x === headX && o.y === headY);
-    const hitSelf = snake.some(p => p.x === headX && p.y === headY);
-
-    if(headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height || hitSelf || hitObstacle) {
-        if (soundsEnabled) { crashSound.currentTime = 0; crashSound.play().catch(() => {}); }
-        saveScore(score);
-        gameRunning = false;
+    function startLoop() {
+      if (gameLoop) {
         clearInterval(gameLoop);
-        statusTitle.innerText = "GAME OVER";
-        bgMusic.pause();
-        bgMusic.currentTime = 0;
-        statusTitle.style.color = "#ef4444";
-        overlay.classList.remove("hidden");
-        return;
+      }
+
+      gameLoop = setInterval(draw, currentSpeed);
     }
 
-    // Adiciona a nova cabeça se não bateu em nada
-    snake.unshift(newHead);
+    function initGame() {
+      score = 0;
+      level = 1;
+      currentSpeed = 120;
+      isPaused = false;
+      direction = "RIGHT";
+      snake = [
+        { x: 10 * box, y: 10 * box },
+        { x: 9 * box, y: 10 * box },
+        { x: 8 * box, y: 10 * box }
+      ];
 
-    // --- 5. DESENHAR COBRA PROFISSIONAL ---
-snake.forEach((part, i) => {
-    const isHead = i === 0;
-    const isTail = i === snake.length - 1;
-    
-    // Cauda afunilada, corpo normal, cabeça levemente maior
-    let size = isHead ? box * 1.1 : (isTail ? box * 0.8 : box * 1.0);
-    let offset = (box - size) / 2;
+      obstacles = [];
+      spawnFood();
+      spawnObstacles();
 
-    // Gradiente de Volume (Efeito 3D)
-    let grad = ctx.createRadialGradient(
-        part.x + box/2, part.y + box/2, 2,
-        part.x + box/2, part.y + box/2, box/2
-    );
-    grad.addColorStop(0, isHead ? headColor : bodyColor);
-    grad.addColorStop(1, "#052e16"); // Sombra profunda nas bordas
+      gameRunning = true;
+      overlay.classList.add("hidden");
+      setSessionState("playing");
+      updateUI();
 
-    ctx.fillStyle = grad;
-    ctx.shadowBlur = isHead ? 15 : 5;
-    ctx.shadowColor = "rgba(0,0,0,0.5)";
+      if (musicEnabled) {
+        bgMusic.currentTime = 0;
+        bgMusic.play().catch(() => {});
+      }
 
-    if (isHead) {
-        // --- CABEÇA REALISTA ---
-        ctx.save();
-        ctx.translate(part.x + box/2, part.y + box/2);
-        
-        // Rotaciona a cabeça conforme a direção
-        const angles = { "RIGHT": 0, "LEFT": Math.PI, "UP": -Math.PI/2, "DOWN": Math.PI/2 };
-        ctx.rotate(angles[direction]);
+      startLoop();
+    }
 
-        // Formato de "Diamante" Arredondado
-        ctx.beginPath();
-        ctx.moveTo(12, 0); 
-        ctx.bezierCurveTo(10, -10, -10, -10, -10, 0); // Lado de cima
-        ctx.bezierCurveTo(-10, 10, 10, 10, 12, 0);    // Lado de baixo
-        ctx.fill();
+    function startNewRun() {
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume().catch(() => {});
+      }
 
-        // OLHOS COM PUPILAS
-        ctx.fillStyle = "white";
-        ctx.beginPath();
-        ctx.arc(4, -5, 3, 0, Math.PI * 2); // Olho 1
-        ctx.arc(4, 5, 3, 0, Math.PI * 2);  // Olho 2
-        ctx.fill();
+      initGame();
+    }
 
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(5, -5, 1.5, 0, Math.PI * 2); // Pupila 1
-        ctx.arc(5, 5, 1.5, 0, Math.PI * 2);  // Pupila 2
-        ctx.fill();
+    function setPauseState(nextPaused) {
+      if (!gameRunning) {
+        return;
+      }
 
-        // LÍNGUA BIFURCADA ANIMADA (Sutil)
-        if (Math.random() > 0.8) { // A língua "sai" aleatoriamente
-            ctx.strokeStyle = "#ff4444";
+      isPaused = nextPaused;
+
+      if (isPaused) {
+        setOverlayState("PAUSADO", "Respire, ajuste a estrategia e retome quando quiser.", "#f6c760");
+        overlay.classList.remove("hidden");
+        bgMusic.pause();
+        setSessionState("paused");
+        return;
+      }
+
+      overlay.classList.add("hidden");
+      setSessionState("playing");
+
+      if (musicEnabled) {
+        bgMusic.play().catch(() => {});
+      }
+    }
+
+    function endGame() {
+      saveScore(score);
+      gameRunning = false;
+      isPaused = false;
+
+      if (gameLoop) {
+        clearInterval(gameLoop);
+      }
+
+      bgMusic.pause();
+      bgMusic.currentTime = 0;
+      setOverlayState("GAME OVER", "Seu score foi salvo. Clique em jogar novamente para tentar de novo.", "#ff6b7a");
+      overlay.classList.remove("hidden");
+      setSessionState("over");
+    }
+
+    function handleDirection(code) {
+      if (!gameRunning || isPaused) {
+        return;
+      }
+
+      if (code === "ArrowLeft" && direction !== "RIGHT") {
+        direction = "LEFT";
+      } else if (code === "ArrowUp" && direction !== "DOWN") {
+        direction = "UP";
+      } else if (code === "ArrowRight" && direction !== "LEFT") {
+        direction = "RIGHT";
+      } else if (code === "ArrowDown" && direction !== "UP") {
+        direction = "DOWN";
+      }
+    }
+
+    function drawSnake() {
+      snake.forEach((part, index) => {
+        const isHead = index === 0;
+        const isTail = index === snake.length - 1;
+        const size = isHead ? box * 1.1 : isTail ? box * 0.8 : box;
+        const offset = (box - size) / 2;
+
+        const gradient = ctx.createRadialGradient(
+          part.x + box / 2,
+          part.y + box / 2,
+          2,
+          part.x + box / 2,
+          part.y + box / 2,
+          box / 2
+        );
+
+        gradient.addColorStop(0, isHead ? headColor : bodyColor);
+        gradient.addColorStop(1, "#052e16");
+
+        ctx.fillStyle = gradient;
+        ctx.shadowBlur = isHead ? 15 : 5;
+        ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+
+        if (isHead) {
+          ctx.save();
+          ctx.translate(part.x + box / 2, part.y + box / 2);
+
+          const angles = { RIGHT: 0, LEFT: Math.PI, UP: -Math.PI / 2, DOWN: Math.PI / 2 };
+          ctx.rotate(angles[direction]);
+
+          ctx.beginPath();
+          ctx.moveTo(12, 0);
+          ctx.bezierCurveTo(10, -10, -10, -10, -10, 0);
+          ctx.bezierCurveTo(-10, 10, 10, 10, 12, 0);
+          ctx.fill();
+
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath();
+          ctx.arc(4, -5, 3, 0, Math.PI * 2);
+          ctx.arc(4, 5, 3, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = "#000000";
+          ctx.beginPath();
+          ctx.arc(5, -5, 1.5, 0, Math.PI * 2);
+          ctx.arc(5, 5, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (Math.random() > 0.82) {
+            ctx.strokeStyle = "#ff4d4d";
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(12, 0);
             ctx.lineTo(18, 0);
             ctx.moveTo(18, 0);
-            ctx.lineTo(21, -3); // Ponta 1
+            ctx.lineTo(21, -3);
             ctx.moveTo(18, 0);
-            ctx.lineTo(21, 3);  // Ponta 2
+            ctx.lineTo(21, 3);
             ctx.stroke();
-        }
-        ctx.restore();
+          }
+
+          ctx.restore();
         } else {
-        // --- CORPO E CAUDA ---
-        ctx.beginPath();
-        ctx.roundRect(part.x + offset, part.y + offset, size, size, isTail ? 10 : 6);
-        ctx.fill();
+          ctx.beginPath();
+          ctx.roundRect(part.x + offset, part.y + offset, size, size, isTail ? 10 : 6);
+          ctx.fill();
         }
+
         ctx.shadowBlur = 0;
-    });
-}
-function saveScore(score) {
-    let scores = JSON.parse(localStorage.getItem("snakeRanking")) || [];
-    scores.push(score);
-    scores.sort((a,b)=> b-a);
-    scores = scores.slice(0,5);
-    localStorage.setItem("snakeRanking", JSON.stringify(scores));
-}
-
-function showRanking() {
-    const scores = JSON.parse(localStorage.getItem("snakeRanking")) || [];
-    const rankingList = document.getElementById("ranking-list");
-    const modal = document.getElementById("ranking-modal");
-    modal.style.display = "flex";
-
-    rankingList.innerHTML = "";
-    if (scores.length === 0) {
-        rankingList.innerHTML = "<p style='color: #94a3b8;'>Nenhum recorde ainda!</p>";
+      });
     }
 
-    scores.forEach((s, i) => {
-        rankingList.innerHTML += `
-            <div class="ranking-item">
-                <span class="rank-pos">${i + 1}º</span>
-                <span class="rank-score">${s} pts</span>
-            </div>
-        `;
+    function drawFood() {
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = "#ef4444";
+
+      const appleGradient = ctx.createRadialGradient(
+        food.x + box / 2,
+        food.y + box / 2,
+        2,
+        food.x + box / 2,
+        food.y + box / 2,
+        box / 2
+      );
+
+      appleGradient.addColorStop(0, "#fca5a5");
+      appleGradient.addColorStop(1, "#dc2626");
+
+      ctx.fillStyle = appleGradient;
+      ctx.beginPath();
+      ctx.arc(food.x + box / 2, food.y + box / 2, box / 2 - 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.fillStyle = "#4ade80";
+      ctx.beginPath();
+      ctx.ellipse(food.x + box / 2 + 3, food.y + box / 2 - 7, 4, 2, Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawObstacles() {
+      obstacles.forEach(obstacle => {
+        ctx.fillStyle = "#334155";
+        ctx.beginPath();
+        ctx.roundRect(obstacle.x + 1, obstacle.y + 1, box - 2, box - 2, 4);
+        ctx.fill();
+        ctx.fillStyle = "#475569";
+        ctx.fillRect(obstacle.x + 4, obstacle.y + 4, 3, 3);
+      });
+    }
+
+    function drawGrid() {
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "rgba(77, 168, 255, 0.05)";
+      ctx.lineWidth = 0.5;
+
+      for (let x = 0; x <= canvas.width; x += box) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+
+      for (let y = 0; y <= canvas.height; y += box) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+    }
+
+    function draw() {
+      if (!gameRunning || isPaused) {
+        return;
+      }
+
+      drawGrid();
+      drawObstacles();
+      drawFood();
+
+      let headX = snake[0].x;
+      let headY = snake[0].y;
+
+      if (direction === "LEFT") {
+        headX -= box;
+      } else if (direction === "UP") {
+        headY -= box;
+      } else if (direction === "RIGHT") {
+        headX += box;
+      } else if (direction === "DOWN") {
+        headY += box;
+      }
+
+      if (headX === food.x && headY === food.y) {
+        score += 10;
+
+        if (soundsEnabled) {
+          eatSound.currentTime = 0;
+          eatSound.play().catch(() => {});
+        }
+
+        if (score > highscore) {
+          highscore = score;
+          localStorage.setItem("snakeRecorde", String(highscore));
+        }
+
+        if (score % 50 === 0) {
+          level += 1;
+          currentSpeed = Math.max(40, currentSpeed - 15);
+
+          if (soundsEnabled) {
+            levelSound.currentTime = 0;
+            levelSound.play().catch(() => {});
+          }
+
+          spawnObstacles();
+          startLoop();
+        }
+
+        spawnFood();
+        updateUI();
+      } else {
+        snake.pop();
+      }
+
+      const newHead = { x: headX, y: headY };
+      const hitObstacle = obstacles.some(obstacle => obstacle.x === headX && obstacle.y === headY);
+      const hitSelf = snake.some(segment => segment.x === headX && segment.y === headY);
+      const outOfBounds = headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height;
+
+      if (outOfBounds || hitObstacle || hitSelf) {
+        if (soundsEnabled) {
+          crashSound.currentTime = 0;
+          crashSound.play().catch(() => {});
+        }
+
+        endGame();
+        return;
+      }
+
+      snake.unshift(newHead);
+      drawSnake();
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && gameRunning && !isPaused) {
+        setPauseState(true);
+      }
     });
 
-    modal.classList.remove("hidden");
-}
+    document.addEventListener("keydown", event => {
+      const keysToBlock = ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
 
-function closeRanking() {
-    document.getElementById("ranking-modal").classList.add("hidden");
-}
-    </script>
+      if (keysToBlock.includes(event.code)) {
+        event.preventDefault();
+      }
+
+      if (event.code === "Escape" && !rankingModal.classList.contains("hidden")) {
+        closeRanking();
+        return;
+      }
+
+      if (event.code === "Space" && !gameRunning) {
+        startNewRun();
+        return;
+      }
+
+      if (event.code === "Escape" && gameRunning) {
+        setPauseState(!isPaused);
+        return;
+      }
+
+      handleDirection(event.code);
+    });
+
+    btnStart.addEventListener("click", startNewRun);
+    btnPause.addEventListener("click", () => setPauseState(!isPaused));
+    btnMusic.addEventListener("click", toggleMusic);
+    btnSounds.addEventListener("click", toggleSounds);
+    btnRanking.addEventListener("click", showRanking);
+    btnOpenPreviewRanking.addEventListener("click", showRanking);
+    navRankingBtn.addEventListener("click", showRanking);
+    bodyColorInput.addEventListener("input", updateSkin);
+
+    document.getElementById("btn-close-ranking").addEventListener("click", closeRanking);
+    document.getElementById("btn-close-ranking-top").addEventListener("click", closeRanking);
+    document.querySelector("[data-close-ranking=\"true\"]").addEventListener("click", closeRanking);
+
+    updateSkin();
+    updateUI();
+    renderRankingPreview();
+    setSessionState("waiting");
+    setOverlayState("SNAKE PRO", "Pressione Espaco ou use o botao Iniciar para comecar.", "#22c55e");
+  </script>
 </body>
 </html>
