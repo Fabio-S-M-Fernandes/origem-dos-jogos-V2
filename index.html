@@ -24,7 +24,8 @@
       <li><a href="#tipos">Gêneros</a></li>
       <li><a href="#quiz">Quiz</a></li>
       <li id="user-menu" class="user-menu">
-        <div class="user-avatar-wrapper" id="user-avatar-wrapper" title="Clique para login ou configurações">
+        <button id="login-link" type="button" aria-label="Abrir login">Login</button>
+        <div class="user-avatar-wrapper auth-hidden" id="user-avatar-wrapper" title="Abrir menu do usuário">
           <img id="user-avatar" class="user-avatar" src="" alt="Avatar do usuário" />
         </div>
         <div id="user-dropdown" class="user-dropdown hidden" aria-live="polite">
@@ -54,35 +55,110 @@
     <p>Hoje, a evolução nos trouxe gráficos fotorrealistas, mundos abertos infinitos, Realidade Virtual (VR) e esportes eletrônicos (eSports) que lotam estádios. O videogame deixou de ser apenas um brinquedo para se tornar a maior indústria de entretenimento do mundo!</p>
   </section>
 
-  <section id="consoles" class="card reveal">
-    <h2>🎮 Tipos de Consoles</h2>
-
-    <div class="grid">
-
-      <div class="console-card">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M4 8h16v8H4z"/>
-        </svg>
-        <p><strong>Mesa</strong></p>
-        <p>Consoles ligados à TV com alto desempenho e gráficos avançados.</p>
+  <section id="consoles" class="card reveal consoles-section">
+    <div class="consoles-header">
+      <div>
+        <p class="consoles-kicker">Jeitos de jogar</p>
+        <h2>🎮 Tipos de Consoles</h2>
       </div>
+      <p class="consoles-intro">Explore os principais formatos de console e descubra qual combina melhor com desempenho, mobilidade e versatilidade.</p>
+    </div>
 
-      <div class="console-card">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M7 4h10v16H7z"/>
-        </svg>
-        <p><strong>Portáteis</strong></p>
-        <p>Permitem jogar em qualquer lugar, com foco em mobilidade.</p>
+    <div class="consoles-showcase">
+      <article class="consoles-destaque" id="consoles-preview" data-console-mode="mesa">
+        <div class="consoles-destaque-visual">
+          <span class="consoles-visual-symbol" id="console-preview-symbol">▭</span>
+          <small id="console-preview-tag">Potência na TV</small>
+        </div>
+
+        <div class="consoles-destaque-copy">
+          <span class="consoles-badge" id="console-preview-badge">Console de mesa</span>
+          <h3 id="console-preview-title">Experiência robusta para jogar na sala</h3>
+          <p id="console-preview-text">Ligados à TV ou ao monitor, eles priorizam desempenho, catálogos fortes e setups perfeitos para longas sessões.</p>
+
+          <div class="consoles-meta">
+            <div class="consoles-meta-card">
+              <span>Melhor para</span>
+              <strong id="console-preview-best">Desempenho e multiplayer local</strong>
+            </div>
+            <div class="consoles-meta-card">
+              <span>Estilo de uso</span>
+              <strong id="console-preview-style">Setup fixo com foco em imersão</strong>
+            </div>
+          </div>
+
+          <ul class="consoles-points" id="console-preview-points">
+            <li>Maior poder gráfico para jogos exigentes.</li>
+            <li>Ideal para partidas na TV com amigos e família.</li>
+            <li>Costuma receber grandes lançamentos first-party e AAA.</li>
+          </ul>
+        </div>
+      </article>
+
+      <div class="consoles-grid" role="list" aria-label="Categorias de consoles">
+        <button
+          type="button"
+          class="console-card active"
+          aria-pressed="true"
+          data-mode="mesa"
+          data-symbol="▭"
+          data-tag="Potência na TV"
+          data-badge="Console de mesa"
+          data-title="Experiência robusta para jogar na sala"
+          data-text="Ligados à TV ou ao monitor, eles priorizam desempenho, catálogos fortes e setups perfeitos para longas sessões."
+          data-best="Desempenho e multiplayer local"
+          data-style="Setup fixo com foco em imersão"
+          data-points="Maior poder gráfico para jogos exigentes.|Ideal para partidas na TV com amigos e família.|Costuma receber grandes lançamentos first-party e AAA.">
+          <span class="console-card-icon" aria-hidden="true">▭</span>
+          <div class="console-card-copy">
+            <strong>Mesa</strong>
+            <p>Consoles conectados à TV, pensados para alto desempenho e experiências mais cinematográficas.</p>
+          </div>
+          <span class="console-chip">Alta performance</span>
+        </button>
+
+        <button
+          type="button"
+          class="console-card"
+          aria-pressed="false"
+          data-mode="portatil"
+          data-symbol="▯"
+          data-tag="Jogue em qualquer lugar"
+          data-badge="Console portátil"
+          data-title="Mobilidade total para jogar onde quiser"
+          data-text="Leves, práticos e focados em autonomia, eles foram feitos para transformar filas, viagens e intervalos em momentos de jogo."
+          data-best="Portabilidade e praticidade"
+          data-style="Sessões rápidas e flexíveis"
+          data-points="Perfeito para levar na mochila ou no bolso.|Funciona muito bem em rotinas corridas e viagens.|Valoriza conforto, bateria e acesso rápido.">
+          <span class="console-card-icon" aria-hidden="true">▯</span>
+          <div class="console-card-copy">
+            <strong>Portáteis</strong>
+            <p>Modelos criados para mobilidade, com foco em praticidade, leveza e partidas em qualquer lugar.</p>
+          </div>
+          <span class="console-chip">Mobilidade</span>
+        </button>
+
+        <button
+          type="button"
+          class="console-card"
+          aria-pressed="false"
+          data-mode="hibrido"
+          data-symbol="✚"
+          data-tag="Do portátil para a TV"
+          data-badge="Console híbrido"
+          data-title="Versatilidade para alternar entre casa e rua"
+          data-text="Os híbridos unem o melhor de dois mundos: funcionam no modo portátil, mas também podem virar uma experiência de sala com poucos movimentos."
+          data-best="Flexibilidade no mesmo aparelho"
+          data-style="Uso misto entre TV e portabilidade"
+          data-points="Troca rápida entre modos portátil e dock.|Combina liberdade com experiência compartilhada.|Excelente para quem quer um console mais adaptável.">
+          <span class="console-card-icon" aria-hidden="true">✚</span>
+          <div class="console-card-copy">
+            <strong>Híbridos</strong>
+            <p>Alternam entre portátil e TV, oferecendo uma experiência versátil para diferentes momentos.</p>
+          </div>
+          <span class="console-chip">Versatilidade</span>
+        </button>
       </div>
-
-      <div class="console-card">
-        <svg viewBox="0 0 24 24" class="icon line">
-          <path d="M3 12h18M12 3v18"/>
-        </svg>
-        <p><strong>Híbridos</strong></p>
-        <p>Funcionam tanto como portátil quanto conectados à TV.</p>
-      </div>
-
     </div>
   </section>
 
@@ -104,39 +180,121 @@
   <p>Na saúde, a "gamificação" é usada na fisioterapia e no tratamento de distúrbios cognitivos, tornando processos de recuperação mais engajadores. O videogame deixou de ser um passatempo isolado para se tornar uma das formas de expressão artística e cultural mais influentes do século XXI.</p>
 </section>
 
-  <section class="card reveal">
-    <h2>🖼️ Galeria de Jogos</h2>
-    <div class="galeria"> 
-      <img src="download.jfif" alt="Jogo clássico">
-      <img src="download (1).jfif" alt="Jogo moderno">
-      <img src="download (2).jfif" alt="Jogo multiplayer">
-      <img src="download (3).jfif" alt="Jogo portátil">
+  <section class="card reveal gallery-section" id="galeria">
+    <div class="gallery-header">
+      <div>
+        <p class="gallery-kicker">Linha do tempo visual</p>
+        <h2>🖼️ Galeria de Jogos</h2>
+      </div>
+      <p class="gallery-intro">Passe o mouse ou toque nos cards para destacar diferentes fases e estilos que marcaram a história dos games.</p>
+    </div>
+
+    <div class="galeria-showcase" id="galeria-showcase">
+      <article class="galeria-destaque">
+        <div class="galeria-destaque-imagem">
+          <img id="galeria-preview-img" src="download.jfif" alt="Cena inspirada na era mitológica dos jogos de aventura">
+        </div>
+        <div class="galeria-destaque-conteudo">
+          <span class="galeria-badge" id="galeria-preview-badge">Mitologia e aventura</span>
+          <h3 id="galeria-preview-title">Mundos épicos e cinematográficos</h3>
+          <p id="galeria-preview-text">Dos cenários grandiosos aos combates intensos, os jogos modernos elevaram a narrativa visual e a imersão a um novo patamar.</p>
+        </div>
+      </article>
+
+      <div class="galeria" role="list" aria-label="Jogos em destaque">
+        <button type="button" class="galeria-item active" data-image="download.jfif" data-badge="Mitologia e aventura" data-title="Mundos épicos e cinematográficos" data-text="Dos cenários grandiosos aos combates intensos, os jogos modernos elevaram a narrativa visual e a imersão a um novo patamar." data-alt="Cena inspirada na era mitológica dos jogos de aventura" aria-pressed="true">
+          <img src="download.jfif" alt="Cena inspirada na era mitológica dos jogos de aventura">
+          <span class="galeria-overlay">
+            <strong>Aventura</strong>
+            <small>Escala cinematográfica</small>
+          </span>
+        </button>
+        <button type="button" class="galeria-item" data-image="download (1).jfif" data-badge="Era 16-bit" data-title="Criatividade em pixels inesquecíveis" data-text="Fases coloridas, trilhas marcantes e jogabilidade precisa fizeram dos clássicos 2D uma base essencial da cultura gamer." data-alt="Cena clássica de plataforma inspirada na geração 16-bit" aria-pressed="false">
+          <img src="download (1).jfif" alt="Cena clássica de plataforma inspirada na geração 16-bit">
+          <span class="galeria-overlay">
+            <strong>Clássicos</strong>
+            <small>Nostalgia pura</small>
+          </span>
+        </button>
+        <button type="button" class="galeria-item" data-image="download (2).jfif" data-badge="Narrativa emocional" data-title="Personagens mais humanos e memoráveis" data-text="A evolução dos games também trouxe histórias mais profundas, relações complexas e experiências que ficam na memória." data-alt="Cena dramática de um jogo focado em narrativa" aria-pressed="false">
+          <img src="download (2).jfif" alt="Cena dramática de um jogo focado em narrativa">
+          <span class="galeria-overlay">
+            <strong>Narrativa</strong>
+            <small>Mais emoção</small>
+          </span>
+        </button>
+        <button type="button" class="galeria-item" data-image="download (3).jfif" data-badge="Mundo aberto" data-title="Liberdade, estilo e exploração" data-text="Os jogos contemporâneos combinam identidade visual forte com universos expansivos, decisões livres e experiências cada vez mais dinâmicas." data-alt="Cena de jogo de mundo aberto com identidade marcante" aria-pressed="false">
+          <img src="download (3).jfif" alt="Cena de jogo de mundo aberto com identidade marcante">
+          <span class="galeria-overlay">
+            <strong>Exploração</strong>
+            <small>Impacto visual</small>
+          </span>
+        </button>
+      </div>
     </div>
   </section>
   
 <section class="card reveal" id="quiz">
   <h2>🧠 Quiz Gamer</h2>
   <div id="quiz-container">
-    <p id="info-nivel" style="font-size: 14px; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 10px;"></p>
-    <h3 id="pergunta"></h3>
-    <div class="opcoes">
-      <button class="opcao"></button>
-      <button class="opcao"></button>
-      <button class="opcao"></button>
-      <button class="opcao"></button>
-    </div>
-    <div id="resultado"></div>
-    <button id="btn-proxima" style="display: none; margin-top: 20px;">Próxima Pergunta ➡️</button>
-
-    <div id="quiz-summary" class="quiz-summary hidden">
-      <p id="final-message"></p>  
-      <p id="score-message"></p>
-      <div id="leaderboard" class="leaderboard">
-        <h2>🏅 Top 3</h2>
-        <br>
-        <ol id="top-scores"></ol>
+    <div id="quiz-start" class="quiz-start-screen">
+      <div class="quiz-start-copy">
+        <p class="quiz-kicker">Desafio interativo</p>
+        <h3>Teste seus conhecimentos e entre no ranking gamer.</h3>
+        <p class="quiz-description">Responda perguntas em diferentes níveis de dificuldade, acompanhe seu progresso em tempo real e veja se você consegue entrar no Top 3.</p>
+        <div class="quiz-highlights">
+          <span>15 perguntas</span>
+          <span>3 níveis</span>
+          <span>Top 3 local</span>
+        </div>
+        <button id="btn-comecar-quiz" class="btn-quiz-start" type="button">Começar Quiz</button>
       </div>
-      <button id="btn-reset" class="btn-reset">Reiniciar Quiz</button>
+
+      <div class="quiz-preview-panel">
+        <p class="quiz-preview-label">Hall da fama</p>
+        <ol id="quiz-preview-scores" class="quiz-preview-scores"></ol>
+      </div>
+    </div>
+
+    <div id="quiz-stage" class="quiz-stage hidden">
+      <div class="quiz-topbar">
+        <div class="quiz-status-block">
+          <p class="quiz-status-label">Nível atual</p>
+          <p id="info-nivel"></p>
+        </div>
+
+        <div class="quiz-progress-panel">
+          <div class="quiz-progress-head">
+            <span id="quiz-question-count">Pergunta 1 de 15</span>
+            <span id="quiz-score-live">0 acertos</span>
+          </div>
+          <div class="quiz-progress-track">
+            <span id="quiz-progress-fill"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="quiz-question-card" class="quiz-question-card">
+        <h3 id="pergunta"></h3>
+        <div class="opcoes">
+          <button class="opcao"></button>
+          <button class="opcao"></button>
+          <button class="opcao"></button>
+          <button class="opcao"></button>
+        </div>
+        <div id="resultado"></div>
+        <button id="btn-proxima" class="btn-quiz-next" type="button" style="display: none;">Próxima Pergunta ➡️</button>
+      </div>
+
+      <div id="quiz-summary" class="quiz-summary hidden">
+        <p id="final-message"></p>  
+        <p id="score-message"></p>
+        <div id="leaderboard" class="leaderboard">
+          <h2>🏅 Top 3</h2>
+          <ol id="top-scores"></ol>
+        </div>
+        <button id="btn-reset" class="btn-reset" type="button">Jogar Novamente</button>
+      </div>
     </div>
   </div>
 </section>
@@ -150,28 +308,81 @@
   </div>
 </section>
 
-<section id="contato" class="card reveal">
-  <h2>📩 Entre em Contato</h2>
-  <p>Tem alguma dúvida ou sugestão? Envie uma mensagem!</p>
-  
-  <form action="https://formspree.io/f/mnjgnwoy" method="POST" id="form-contato">
-    <div class="input-group">
-      <label for="nome">Seu nome</label>
-      <input type="text" name="nome" id="nome" placeholder="Escreva aqui seu nome?" required>
+<section id="contato" class="card reveal contact-section">
+  <div class="contact-header">
+    <div>
+      <p class="contact-kicker">Canal aberto</p>
+      <h2>📩 Entre em Contato</h2>
+    </div>
+    <p class="contact-intro">Tem alguma dúvida, ideia ou sugestão? Envie sua mensagem e ajude a deixar essa experiência ainda mais legal.</p>
+  </div>
+
+  <div class="contact-showcase">
+    <div class="contact-panel">
+      <span class="contact-badge">Feedback que evolui o projeto</span>
+      <h3>Seu recado pode virar a próxima melhoria do site.</h3>
+      <p class="contact-panel-text">Se você quiser sugerir novos jogos, comentar o visual, apontar algum erro ou só mandar uma ideia criativa, este é o espaço certo.</p>
+
+      <div class="contact-highlights">
+        <span>Dúvidas</span>
+        <span>Sugestões</span>
+        <span>Feedback</span>
+      </div>
+
+      <div class="contact-info-grid">
+        <article class="contact-info-card">
+          <strong>Conteúdo</strong>
+          <p>Ideias para novas seções, curiosidades e temas gamer.</p>
+        </article>
+        <article class="contact-info-card">
+          <strong>Design</strong>
+          <p>Comentários sobre visual, navegação e organização do site.</p>
+        </article>
+        <article class="contact-info-card">
+          <strong>Melhorias</strong>
+          <p>Sugestões de recursos, correções e experiências mais interativas.</p>
+        </article>
+      </div>
     </div>
 
-    <div class="input-group">
-      <label for="email">Seu e-mail</label>
-      <input type="email" name="email" id="email" placeholder="exemplo@email.com" required>
+    <div class="contact-form-shell" id="contact-form-card">
+      <div class="contact-form-top">
+        <p class="contact-form-kicker">Envie sua mensagem</p>
+        <p class="contact-form-note">Preencha os campos abaixo e mande seu recado.</p>
+      </div>
+
+      <form action="https://formspree.io/f/mnjgnwoy" method="POST" id="form-contato">
+        <div class="input-group contact-field">
+          <label for="nome">Seu nome</label>
+          <input type="text" name="nome" id="nome" placeholder="Como você quer ser chamado?" required>
+          <small class="contact-helper">Use o nome que você prefere ver na resposta.</small>
+        </div>
+
+        <div class="input-group contact-field">
+          <label for="email">Seu e-mail</label>
+          <input type="email" name="email" id="email" placeholder="exemplo@email.com" required>
+          <small class="contact-helper">É por aqui que a resposta pode chegar.</small>
+        </div>
+
+        <div class="input-group contact-field contact-field-message">
+          <div class="contact-field-head">
+            <label for="mensagem">Sua mensagem</label>
+            <span id="mensagem-count" class="contact-counter">0/300</span>
+          </div>
+          <textarea name="mensagem" id="mensagem" placeholder="Conta sua ideia, dúvida ou sugestão..." maxlength="300" required></textarea>
+          <small class="contact-helper">Quanto mais contexto você mandar, melhor.</small>
+        </div>
+
+        <div class="contact-actions">
+          <button type="submit" class="btn-enviar">
+            <span class="btn-enviar-label">Enviar Mensagem</span>
+            <span class="btn-enviar-icon" aria-hidden="true">🚀</span>
+          </button>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </div>
+      </form>
     </div>
-
-   <div class="input-group">
-  <label for="mensagem">Sua mensagem</label>
-  <textarea name="mensagem" id="mensagem" placeholder="Sua Mensagem..." required></textarea>
-</div>
-
-    <button type="submit" class="btn-enviar">Enviar Mensagem 🚀</button>
-  </form>
+  </div>
 </section>
 
 <button id="back-to-top" title="Voltar ao topo">
@@ -222,28 +433,36 @@
 </footer>
 
 <!-- Modals for Login/Register -->
-<div id="login-modal" class="modal">
+<div id="login-modal" class="modal auth-modal">
   <div class="modal-overlay"></div>
-  <div class="modal-content">
+  <div class="modal-content auth-modal-content">
     <span class="close">&times;</span>
-    <h2>Login</h2>
-    <form id="login-form" novalidate>
-      <div class="field-group">
+    <div class="auth-modal-header">
+      <h2>Login</h2>
+      <p class="auth-modal-subtitle">Entre para continuar de onde você parou.</p>
+    </div>
+    <form id="login-form" class="auth-form" novalidate>
+      <div class="field-group auth-field">
         <label for="login-email">Email</label>
-        <i class="fas fa-envelope icon-inline" aria-hidden="true"></i>
-        <input type="email" id="login-email" placeholder="Digite seu email" required>
+        <div class="input-shell">
+          <i class="fas fa-envelope icon-inline" aria-hidden="true"></i>
+          <input type="email" id="login-email" placeholder="Digite seu email" required>
+        </div>
         <span class="error-text"></span>
       </div>
-      <div class="field-group">
+      <div class="field-group auth-field has-toggle">
         <label for="login-password">Senha</label>
-        <i class="fas fa-lock icon-inline" aria-hidden="true"></i>
-        <input type="password" id="login-password" placeholder="Digite sua senha" required>
-        <i class="fas fa-eye toggle-password" data-target="login-password"></i>
+        <div class="input-shell">
+          <i class="fas fa-lock icon-inline" aria-hidden="true"></i>
+          <input type="password" id="login-password" placeholder="Digite sua senha" required>
+          <i class="fas fa-eye toggle-password" data-target="login-password"></i>
+        </div>
         <span class="error-text"></span>
       </div>
-      <div class="field-group remember-group">
+      <div class="field-group remember-group auth-row">
         <label class="checkbox-label">
-          <input type="checkbox" id="remember-me"> Lembrar-me
+          <input type="checkbox" id="remember-me">
+          <span>Lembrar-me</span>
         </label>
       </div>
       <button type="submit" class="submit-btn">
@@ -251,35 +470,46 @@
         <div class="spinner" style="display: none;"></div>
       </button>
     </form>
-  <div class="divider"><span>ou</span></div>
-  <button id="google-signin-btn" class="btn-google">Conectar com Google</button>
-  <p class="switch-auth">Não tem conta? <a href="#" id="show-register">Registrar</a></p>
+    <div class="auth-alt">
+      <div class="divider"><span>ou</span></div>
+      <div id="google-signin-btn"></div>
+    </div>
+    <p class="switch-auth">Não tem conta? <a href="#" id="show-register">Registrar</a></p>
   </div>
 </div>
 
-<div id="register-modal" class="modal">
+<div id="register-modal" class="modal auth-modal">
   <div class="modal-overlay"></div>
-  <div class="modal-content">
+  <div class="modal-content auth-modal-content">
     <span class="close">&times;</span>
-    <h2>Registrar</h2>
-    <form id="register-form" novalidate>
-      <div class="field-group">
+    <div class="auth-modal-header">
+      <h2>Registrar</h2>
+      <p class="auth-modal-subtitle">Crie sua conta para salvar seu perfil e continuar sua jornada gamer.</p>
+    </div>
+    <form id="register-form" class="auth-form" novalidate>
+      <div class="field-group auth-field">
         <label for="register-username">Nome de usuário</label>
-        <i class="fas fa-user icon-inline" aria-hidden="true"></i>
-        <input type="text" id="register-username" placeholder="Escolha um nome" required>
+        <div class="input-shell">
+          <i class="fas fa-user icon-inline" aria-hidden="true"></i>
+          <input type="text" id="register-username" placeholder="Escolha um nome" required>
+        </div>
         <span class="error-text"></span>
       </div>
-      <div class="field-group">
+      <div class="field-group auth-field">
         <label for="register-email">Email</label>
-        <i class="fas fa-envelope icon-inline" aria-hidden="true"></i>
-        <input type="email" id="register-email" placeholder="Digite seu email" required>
+        <div class="input-shell">
+          <i class="fas fa-envelope icon-inline" aria-hidden="true"></i>
+          <input type="email" id="register-email" placeholder="Digite seu email" required>
+        </div>
         <span class="error-text"></span>
       </div>
-      <div class="field-group">
+      <div class="field-group auth-field has-toggle">
         <label for="register-password">Senha</label>
-        <i class="fas fa-lock icon-inline" aria-hidden="true"></i>
-        <input type="password" id="register-password" placeholder="Crie uma senha forte" required>
-        <i class="fas fa-eye toggle-password" data-target="register-password"></i>
+        <div class="input-shell">
+          <i class="fas fa-lock icon-inline" aria-hidden="true"></i>
+          <input type="password" id="register-password" placeholder="Crie uma senha forte" required>
+          <i class="fas fa-eye toggle-password" data-target="register-password"></i>
+        </div>
         <span class="error-text"></span>
       </div>
       <button type="submit" class="submit-btn">

@@ -42,11 +42,104 @@ document
   .querySelectorAll(".reveal")
   .forEach(el => observer.observe(el));
 
+const galleryItems = document.querySelectorAll(".galeria-item");
+const galleryPreviewImg = document.getElementById("galeria-preview-img");
+const galleryPreviewBadge = document.getElementById("galeria-preview-badge");
+const galleryPreviewTitle = document.getElementById("galeria-preview-title");
+const galleryPreviewText = document.getElementById("galeria-preview-text");
+
+if (galleryItems.length && galleryPreviewImg && galleryPreviewBadge && galleryPreviewTitle && galleryPreviewText) {
+  const updateGalleryPreview = item => {
+    galleryItems.forEach(card => {
+      const isActive = card === item;
+      card.classList.toggle("active", isActive);
+      card.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+
+    galleryPreviewImg.style.opacity = "0.45";
+
+    window.setTimeout(() => {
+      galleryPreviewImg.src = item.dataset.image;
+      galleryPreviewImg.alt = item.dataset.alt;
+      galleryPreviewBadge.textContent = item.dataset.badge;
+      galleryPreviewTitle.textContent = item.dataset.title;
+      galleryPreviewText.textContent = item.dataset.text;
+      galleryPreviewImg.style.opacity = "1";
+    }, 120);
+  };
+
+  galleryItems.forEach(item => {
+    ["mouseenter", "focus", "click"].forEach(eventName => {
+      item.addEventListener(eventName, () => updateGalleryPreview(item));
+    });
+  });
+}
+
+const consoleCards = document.querySelectorAll(".console-card");
+const consolesPreviewEl = document.getElementById("consoles-preview");
+const consolePreviewSymbol = document.getElementById("console-preview-symbol");
+const consolePreviewTag = document.getElementById("console-preview-tag");
+const consolePreviewBadge = document.getElementById("console-preview-badge");
+const consolePreviewTitle = document.getElementById("console-preview-title");
+const consolePreviewText = document.getElementById("console-preview-text");
+const consolePreviewBest = document.getElementById("console-preview-best");
+const consolePreviewStyle = document.getElementById("console-preview-style");
+const consolePreviewPoints = document.getElementById("console-preview-points");
+
+if (
+  consoleCards.length &&
+  consolesPreviewEl &&
+  consolePreviewSymbol &&
+  consolePreviewTag &&
+  consolePreviewBadge &&
+  consolePreviewTitle &&
+  consolePreviewText &&
+  consolePreviewBest &&
+  consolePreviewStyle &&
+  consolePreviewPoints
+) {
+  const updateConsolePreview = card => {
+    consoleCards.forEach(item => {
+      const isActive = item === card;
+      item.classList.toggle("active", isActive);
+      item.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+
+    consolesPreviewEl.dataset.consoleMode = card.dataset.mode || "mesa";
+    consolesPreviewEl.classList.remove("preview-enter");
+    void consolesPreviewEl.offsetWidth;
+    consolesPreviewEl.classList.add("preview-enter");
+
+    consolePreviewSymbol.textContent = card.dataset.symbol || "▭";
+    consolePreviewTag.textContent = card.dataset.tag || "";
+    consolePreviewBadge.textContent = card.dataset.badge || "";
+    consolePreviewTitle.textContent = card.dataset.title || "";
+    consolePreviewText.textContent = card.dataset.text || "";
+    consolePreviewBest.textContent = card.dataset.best || "";
+    consolePreviewStyle.textContent = card.dataset.style || "";
+
+    consolePreviewPoints.innerHTML = "";
+    (card.dataset.points || "")
+      .split("|")
+      .filter(Boolean)
+      .forEach(point => {
+        const item = document.createElement("li");
+        item.textContent = point.trim();
+        consolePreviewPoints.appendChild(item);
+      });
+  };
+
+  consoleCards.forEach(card => {
+    ["mouseenter", "focus", "click"].forEach(eventName => {
+      card.addEventListener(eventName, () => updateConsolePreview(card));
+    });
+  });
+}
+
 // Dados do Quiz
 // Dados do Quiz Expandido
 // 1. Dados do Quiz com Níveis (em ordem de dificuldade)
 const perguntas = [
-  /*
   {
     pergunta: "Qual é o nome do reino onde se passam a maioria dos jogos do Mario?",
     opcoes: ["Hyrule", "Mushroom Kingdom", "Azeroth", "Dream Land"],
@@ -124,7 +217,7 @@ const perguntas = [
     opcoes: ["PUBG", "Minecraft", "League of Legends", "Overwatch"],
     correta: 0,
     nivel: "Médio"
-  },*/
+  },
   {
     pergunta: "Qual empresa desenvolveu o jogo God of War?",
     opcoes: ["Sony Santa Monica", "Naughty Dog", "Insomniac", "Rockstar"],
@@ -141,31 +234,70 @@ const perguntas = [
 
 let perguntaAtual = 0;
 let pontos = 0;
+let quizIniciado = false;
 
 // Leaderboard (top 3) utilizando localStorage
 const totalPerguntas = perguntas.length;
 const topScores = JSON.parse(localStorage.getItem("quizTopScores") || "[]");
 
 // Referências do HTML
+const quizStartEl = document.getElementById("quiz-start");
+const quizStageEl = document.getElementById("quiz-stage");
+const btnComecarQuiz = document.getElementById("btn-comecar-quiz");
 const perguntaEl = document.getElementById("pergunta");
 const nivelEl = document.getElementById("info-nivel");
 const opcoesEl = document.querySelectorAll(".opcao");
+const opcoesGridEl = document.querySelector(".opcoes");
 const resultadoEl = document.getElementById("resultado");
 const btnProxima = document.getElementById("btn-proxima");
 const quizContainer = document.getElementById("quiz-container");
+const quizQuestionCardEl = document.getElementById("quiz-question-card");
+const quizQuestionCountEl = document.getElementById("quiz-question-count");
+const quizScoreLiveEl = document.getElementById("quiz-score-live");
+const quizProgressFillEl = document.getElementById("quiz-progress-fill");
 const quizSummary = document.getElementById("quiz-summary");
 const finalMessageEl = document.getElementById("final-message");
 const scoreMessageEl = document.getElementById("score-message");
 const topScoresEl = document.getElementById("top-scores");
+const quizPreviewScoresEl = document.getElementById("quiz-preview-scores");
 const btnReset = document.getElementById("btn-reset");
 
+function atualizarCabecalhoQuiz(finalizado = false) {
+  if (quizQuestionCountEl) {
+    if (finalizado) {
+      quizQuestionCountEl.textContent = `Perguntas concluídas: ${totalPerguntas}`;
+    } else {
+      quizQuestionCountEl.textContent = `Pergunta ${perguntaAtual + 1} de ${totalPerguntas}`;
+    }
+  }
+
+  if (quizScoreLiveEl) {
+    const label = pontos === 1 ? "acerto" : "acertos";
+    quizScoreLiveEl.textContent = `${pontos} ${label}`;
+  }
+
+  if (quizProgressFillEl) {
+    const progressoBase = finalizado ? totalPerguntas : perguntaAtual + 1;
+    quizProgressFillEl.style.width = `${(progressoBase / totalPerguntas) * 100}%`;
+  }
+}
+
+function animarPergunta() {
+  if (!quizQuestionCardEl) return;
+  quizQuestionCardEl.classList.remove("question-enter");
+  void quizQuestionCardEl.offsetWidth;
+  quizQuestionCardEl.classList.add("question-enter");
+}
+
 function carregarPergunta() {
-  if (!perguntaEl) return;
+  if (!perguntaEl || !opcoesGridEl) return;
   resultadoEl.textContent = "";
   btnProxima.style.display = "none";
   
   const q = perguntas[perguntaAtual];
   perguntaEl.textContent = q.pergunta;
+  atualizarCabecalhoQuiz();
+  animarPergunta();
   
   // Lógica para mostrar o nível e mudar a cor
   if (nivelEl) {
@@ -183,21 +315,40 @@ function carregarPergunta() {
     btn.disabled = false;
     btn.onclick = () => verificarResposta(index);
   });
+
+  if (quizQuestionCardEl) {
+    quizQuestionCardEl.classList.remove("quiz-complete");
+  }
+
+  opcoesGridEl.style.display = "grid";
 }
 
-function atualizarLeaderboard() {
-  topScoresEl.innerHTML = "";
+function renderizarRanking(listaEl, mensagemVazia) {
+  if (!listaEl) return;
+
+  listaEl.innerHTML = "";
 
   if (topScores.length === 0) {
-    topScoresEl.innerHTML = "<li>Nenhum recorde ainda. Seja o primeiro!</li>";
+    const item = document.createElement("li");
+    item.textContent = mensagemVazia;
+    listaEl.appendChild(item);
     return;
   }
 
   topScores.forEach((registro, idx) => {
     const item = document.createElement("li");
-    item.textContent = `${idx + 1}. ${registro.nome} — ${registro.pontos}/${totalPerguntas}`;
-    topScoresEl.appendChild(item);
+    if (listaEl === quizPreviewScoresEl) {
+      item.innerHTML = `<strong>#${idx + 1}</strong><span>${registro.nome} — ${registro.pontos}/${totalPerguntas}</span>`;
+    } else {
+      item.textContent = `${idx + 1}. ${registro.nome} — ${registro.pontos}/${totalPerguntas}`;
+    }
+    listaEl.appendChild(item);
   });
+}
+
+function atualizarLeaderboard() {
+  renderizarRanking(topScoresEl, "Nenhum recorde ainda. Seja o primeiro!");
+  renderizarRanking(quizPreviewScoresEl, "Ainda não há nomes no ranking.");
 }
 
 function salvarRecorde(nome, pontos) {
@@ -230,7 +381,70 @@ function salvarRecorde(nome, pontos) {
   atualizarLeaderboard();
 }
 
+function mostrarTelaInicial() {
+  quizIniciado = false;
+  perguntaAtual = 0;
+  pontos = 0;
+
+  if (quizStartEl) quizStartEl.classList.remove("hidden");
+  if (quizStageEl) quizStageEl.classList.add("hidden");
+  if (quizSummary) {
+    quizSummary.classList.add("hidden");
+    quizSummary.classList.remove("quiz-celebrate");
+  }
+
+  if (quizQuestionCardEl) {
+    quizQuestionCardEl.classList.remove("quiz-complete");
+  }
+
+  if (resultadoEl) resultadoEl.textContent = "";
+  if (perguntaEl) perguntaEl.textContent = "";
+  if (nivelEl) {
+    nivelEl.textContent = "Pronto para começar";
+    nivelEl.style.color = "#c4b5fd";
+  }
+
+  if (opcoesGridEl) {
+    opcoesGridEl.style.display = "grid";
+  }
+
+  if (btnProxima) {
+    btnProxima.style.display = "none";
+    btnProxima.textContent = "Próxima Pergunta ➡️";
+  }
+
+  if (quizProgressFillEl) {
+    quizProgressFillEl.style.width = "0%";
+  }
+
+  if (quizQuestionCountEl) {
+    quizQuestionCountEl.textContent = `Pergunta 0 de ${totalPerguntas}`;
+  }
+
+  if (quizScoreLiveEl) {
+    quizScoreLiveEl.textContent = "0 acertos";
+  }
+
+  atualizarLeaderboard();
+}
+
+function iniciarQuiz() {
+  quizIniciado = true;
+  perguntaAtual = 0;
+  pontos = 0;
+
+  if (quizStartEl) quizStartEl.classList.add("hidden");
+  if (quizStageEl) quizStageEl.classList.remove("hidden");
+  if (quizSummary) {
+    quizSummary.classList.add("hidden");
+    quizSummary.classList.remove("quiz-celebrate");
+  }
+
+  carregarPergunta();
+}
+
 function mostrarResumoFinal() {
+  atualizarCabecalhoQuiz(true);
   quizSummary.classList.remove("hidden");
   quizSummary.classList.add("quiz-celebrate");
 
@@ -283,11 +497,8 @@ function mostrarConfetti(qtd = 20) {
   setTimeout(() => container.remove(), 1600);
 }
 
-// Inicia o quiz
-carregarPergunta();
-atualizarLeaderboard();
-
 function verificarResposta(index) {
+  if (!quizIniciado) return;
   if (quizContainer.dataset.isAnswering === "true") return;
   quizContainer.dataset.isAnswering = "true";
   setTimeout(() => { quizContainer.dataset.isAnswering = "false"; }, 420);
@@ -298,6 +509,11 @@ function verificarResposta(index) {
     btn.classList.remove("opcao-animada");
   });
 
+  quizContainer.classList.remove("explode");
+  void quizContainer.offsetWidth;
+  quizContainer.classList.add("explode");
+  setTimeout(() => quizContainer.classList.remove("explode"), 560);
+
   // animação única e suave para o botão escolhido
   opcoesEl[index].classList.add("opcao-animada");
 
@@ -306,6 +522,7 @@ function verificarResposta(index) {
     resultadoEl.textContent = "✅ Resposta correta!";
     resultadoEl.style.color = "#a5f3fc";
     pontos++;
+    atualizarCabecalhoQuiz();
   } else {
     opcoesEl[index].classList.add("errada");
     opcoesEl[correta].classList.add("correta");
@@ -313,6 +530,7 @@ function verificarResposta(index) {
     resultadoEl.style.color = "#fca5a5";
   }
 
+  btnProxima.textContent = perguntaAtual === perguntas.length - 1 ? "Ver Resultado 🏆" : "Próxima Pergunta ➡️";
   btnProxima.style.display = "inline-block";
 }
 
@@ -321,8 +539,12 @@ btnProxima.onclick = () => {
   if (perguntaAtual < perguntas.length) {
     carregarPergunta();
   } else {
+    quizIniciado = false;
     perguntaEl.textContent = "🏆 Quiz finalizado!";
-    document.querySelector(".opcoes").style.display = "none";
+    if (quizQuestionCardEl) {
+      quizQuestionCardEl.classList.add("quiz-complete");
+    }
+    opcoesGridEl.style.display = "none";
     resultadoEl.textContent = `Você acertou ${pontos} de ${perguntas.length}!`;
     resultadoEl.style.color = "#a5f3fc";
     btnProxima.style.display = "none";
@@ -331,47 +553,112 @@ btnProxima.onclick = () => {
 };
 
 btnReset.onclick = () => {
-  perguntaAtual = 0;
-  pontos = 0;
-  document.querySelector(".opcoes").style.display = "grid";
-  quizSummary.classList.add("hidden");
-  btnProxima.style.display = "none";
-  carregarPergunta();
+  mostrarTelaInicial();
+  if (btnComecarQuiz) btnComecarQuiz.focus();
 };
 
+if (btnComecarQuiz) {
+  btnComecarQuiz.onclick = () => {
+    iniciarQuiz();
+  };
+}
+
+mostrarTelaInicial();
+
 const form = document.getElementById("form-contato");
+const mensagemInput = document.getElementById("mensagem");
+const mensagemCount = document.getElementById("mensagem-count");
+const formStatus = document.getElementById("form-status");
+const contactFormCard = document.getElementById("contact-form-card");
+
+const atualizarContadorMensagem = () => {
+  if (!mensagemInput || !mensagemCount) return;
+
+  const limite = Number(mensagemInput.getAttribute("maxlength")) || 300;
+  const total = mensagemInput.value.length;
+
+  mensagemCount.textContent = `${total}/${limite}`;
+  mensagemCount.classList.toggle("is-limit", total >= limite);
+};
+
+const definirStatusFormulario = (mensagem, tipo = "") => {
+  if (!formStatus) return;
+
+  formStatus.textContent = mensagem;
+  formStatus.className = "form-status";
+
+  if (tipo) {
+    formStatus.classList.add(tipo);
+  }
+};
+
+if (mensagemInput) {
+  atualizarContadorMensagem();
+  mensagemInput.addEventListener("input", atualizarContadorMensagem);
+}
 
 if (form) {
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault(); // Impede de abrir aquela tela do Formspree
-    
-    const status = document.getElementById("form-status");
+  const btn = form.querySelector(".btn-enviar");
+  const btnLabel = btn?.querySelector(".btn-enviar-label");
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!btn) return;
+
     const data = new FormData(event.target);
-    const btn = form.querySelector(".btn-enviar");
 
-    // Feedback visual de carregando
-    btn.innerText = "Enviando...";
     btn.disabled = true;
+    btn.classList.add("is-loading");
+    if (btnLabel) btnLabel.textContent = "Enviando...";
 
-    fetch(event.target.action, {
-      method: form.method,
-      body: data,
-      headers: {
-        'Accept': 'application/json'
+    if (contactFormCard) {
+      contactFormCard.classList.remove("is-success", "is-error");
+    }
+
+    definirStatusFormulario("Enviando sua mensagem...", "is-pending");
+
+    try {
+      const response = await fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+          Accept: "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha no envio do formulário.");
       }
-    }).then(response => {
-      if (response.ok) {
-        // Se deu certo:
-        form.innerHTML = "<h3 style='color: #10b981; text-align: center; padding: 20px;'>✅ Mensagem enviada com sucesso!</h3>";
-      } else {
-        // Se deu erro:
-        btn.innerText = "Erro ao enviar ❌";
-        btn.disabled = false;
+
+      form.reset();
+      atualizarContadorMensagem();
+      definirStatusFormulario("Mensagem enviada com sucesso! Valeu pelo contato.", "is-success");
+
+      if (contactFormCard) {
+        contactFormCard.classList.add("is-success");
       }
-    }).catch(error => {
-      btn.innerText = "Erro na rede ❌";
+
+      if (btnLabel) btnLabel.textContent = "Mensagem enviada";
+
+      window.setTimeout(() => {
+        if (btnLabel) btnLabel.textContent = "Enviar Mensagem";
+        if (contactFormCard) {
+          contactFormCard.classList.remove("is-success");
+        }
+      }, 2400);
+    } catch (error) {
+      definirStatusFormulario("Não foi possível enviar agora. Tente novamente em instantes.", "is-error");
+
+      if (contactFormCard) {
+        contactFormCard.classList.add("is-error");
+      }
+
+      if (btnLabel) btnLabel.textContent = "Tentar novamente";
+    } finally {
       btn.disabled = false;
-    });
+      btn.classList.remove("is-loading");
+    }
   });
 }
 
@@ -415,6 +702,7 @@ const userAvatarWrapper = document.getElementById('user-avatar-wrapper');
 const userAvatar = document.getElementById('user-avatar');
 const userDropdown = document.getElementById('user-dropdown');
 const userMenu = document.getElementById('user-menu');
+const loginLink = document.getElementById('login-link');
 const loginModal = document.getElementById('login-modal');
 const registerModal = document.getElementById('register-modal');
 const profileModal = document.getElementById('profile-modal');
@@ -425,6 +713,7 @@ const uploadStatus = document.getElementById('upload-status');
 const showRegister = document.getElementById('show-register');
 const showLogin = document.getElementById('show-login');
 const googleSigninBtn = document.getElementById('google-signin-btn');
+let googleAuthInitialized = false;
 
 const hasUserMenu = Boolean(userAvatarWrapper && userDropdown && userMenu);
 const hasAuthModals = Boolean(loginModal && registerModal && profileModal);
@@ -526,16 +815,27 @@ function handleGoogleCredentialResponse(response) {
 }
 
 function renderGoogleButton() {
-  if (window.google && window.google.accounts && window.google.accounts.id) {
-    window.google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredentialResponse,
-      ux_mode: 'popup'
-    });
+  if (googleSigninBtn && window.google && window.google.accounts && window.google.accounts.id) {
+    if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.includes('COLOQUE_SEU_CLIENT_ID_AQUI')) {
+      googleSigninBtn.innerHTML = '<button type="button" class="btn-google-placeholder" disabled>Google indisponível: configure o Client ID</button>';
+      return;
+    }
+
+    const buttonWidth = Math.max(220, Math.min((googleSigninBtn.clientWidth || 320) - 8, 340));
+    googleSigninBtn.innerHTML = '';
+
+    if (!googleAuthInitialized) {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleCredentialResponse,
+        ux_mode: 'popup'
+      });
+      googleAuthInitialized = true;
+    }
 
     window.google.accounts.id.renderButton(
       googleSigninBtn,
-      { theme: 'filled_blue', size: 'medium', width: '100%' }
+      { theme: 'filled_blue', size: 'large', width: buttonWidth }
     );
   }
 }
@@ -558,21 +858,68 @@ const showToast = (message, duration = 2200) => {
   setTimeout(() => toast.classList.remove('show'), duration);
 };
 
+const resetAuthForm = form => {
+  if (!form) return;
+
+  form.reset();
+
+  form.querySelectorAll('input').forEach(input => {
+    input.classList.remove('input-valid', 'input-invalid');
+
+    if (input.type === 'password' || input.dataset.originalType === 'password') {
+      input.type = 'password';
+      input.dataset.originalType = 'password';
+    }
+  });
+
+  form.querySelectorAll('.error-text').forEach(node => {
+    node.textContent = '';
+  });
+
+  form.querySelectorAll('.toggle-password').forEach(icon => {
+    icon.classList.add('fa-eye');
+    icon.classList.remove('fa-eye-slash');
+  });
+};
+
 const closeAllModals = () => {
-  [loginModal, registerModal, profileModal].forEach(m => m && m.classList.remove('active'));
+  [loginModal, registerModal, profileModal].forEach(m => m && m.classList.remove('active', 'slide-in'));
+  document.body.classList.remove('modal-open');
 };
 
 const openModal = modal => {
   closeAllModals();
+
+  if (modal === loginModal) {
+    resetAuthForm(document.getElementById('login-form'));
+  }
+
+  if (modal === registerModal) {
+    resetAuthForm(document.getElementById('register-form'));
+  }
+
+  document.body.classList.add('modal-open');
   modal.classList.add('active');
   // Trigger reflow for animation
   modal.offsetHeight;
   modal.classList.add('slide-in');
+
+  const firstFocusable = modal.querySelector('input, button, a');
+  if (firstFocusable) {
+    requestAnimationFrame(() => firstFocusable.focus());
+  }
+
+  if (modal === loginModal) {
+    requestAnimationFrame(() => renderGoogleButton());
+  }
 };
 
 const toggleModal = (modal, open) => {
   if (open) openModal(modal);
-  else modal.classList.remove('active');
+  else {
+    modal.classList.remove('active', 'slide-in');
+    document.body.classList.remove('modal-open');
+  }
 };
 
 if (hasUserMenu) {
@@ -583,6 +930,13 @@ if (hasUserMenu) {
       userDropdown.classList.toggle('hidden');
       return;
     }
+    if (loginModal) openModal(loginModal);
+  });
+}
+
+if (loginLink) {
+  loginLink.addEventListener('click', e => {
+    e.preventDefault();
     if (loginModal) openModal(loginModal);
   });
 }
@@ -609,6 +963,11 @@ document.querySelectorAll('.close').forEach(close => {
 window.addEventListener('click', e => {
   if (e.target.classList.contains('modal')) {
     toggleModal(e.target, false);
+  }
+
+  if (e.target.classList.contains('modal-overlay')) {
+    const modal = e.target.closest('.modal');
+    if (modal) toggleModal(modal, false);
   }
 
   // Fecha dropdown se clicar fora
@@ -746,7 +1105,7 @@ registerForm.addEventListener('submit', async (e) => {
       setErrorFeedback(registerModal, result.error || 'Erro no cadastro.');
     }
   } catch (error) {
-    setErrorFeedback(registerModal, 'Erro de rede.');
+    setErrorFeedback(registerModal, 'Servidor offline. Inicie o back-end em http://localhost:3000.');
   } finally {
     button.classList.remove('loading');
     spinner.style.display = 'none';
@@ -798,7 +1157,7 @@ loginForm.addEventListener('submit', async (e) => {
       setErrorFeedback(loginModal, result.error || 'Credenciais inválidas.');
     }
   } catch (error) {
-    setErrorFeedback(loginModal, 'Erro de rede.');
+    setErrorFeedback(loginModal, 'Servidor offline. Inicie o back-end em http://localhost:3000.');
   } finally {
     button.classList.remove('loading');
     spinner.style.display = 'none';
@@ -924,15 +1283,26 @@ const updateAuthUI = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const avatarEl = document.getElementById('user-avatar');
 
+  if (!avatarEl || !userAvatarWrapper || !userDropdown || !userMenu || !loginLink) {
+    return;
+  }
+
   if (user) {
     const avatarUrl = user.avatar || user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username || 'Player')}&background=6648ff&color=fff&size=128`;
     avatarEl.src = avatarUrl;
     avatarEl.classList.remove('hidden');
-
+    loginLink.classList.add('auth-hidden');
+    userAvatarWrapper.classList.remove('auth-hidden');
+    userMenu.classList.add('is-authenticated');
+    userAvatarWrapper.title = `Abrir menu de ${user.username || 'usuário'}`;
     userDropdown.classList.add('hidden');
   } else {
-    avatarEl.src = 'https://ui-avatars.com/api/?name=Guest&background=333333&color=ffffff&size=128';
-    avatarEl.classList.remove('hidden');
+    avatarEl.src = '';
+    avatarEl.classList.add('hidden');
+    loginLink.classList.remove('auth-hidden');
+    userAvatarWrapper.classList.add('auth-hidden');
+    userMenu.classList.remove('is-authenticated');
+    userAvatarWrapper.title = 'Abrir login';
     userDropdown.classList.add('hidden');
   }
 };
