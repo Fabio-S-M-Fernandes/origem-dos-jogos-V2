@@ -1,9 +1,41 @@
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { OAuth2Client } = require('google-auth-library');
+
+function loadEnvFile() {
+  const envPath = path.join(__dirname, '.env');
+  if (!fs.existsSync(envPath)) {
+    return;
+  }
+
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  envContent.split(/\r?\n/).forEach(line => {
+    const trimmedLine = line.trim();
+    if (!trimmedLine || trimmedLine.startsWith('#')) {
+      return;
+    }
+
+    const separatorIndex = trimmedLine.indexOf('=');
+    if (separatorIndex === -1) {
+      return;
+    }
+
+    const key = trimmedLine.slice(0, separatorIndex).trim();
+    const rawValue = trimmedLine.slice(separatorIndex + 1).trim();
+    const value = rawValue.replace(/^["']|["']$/g, '');
+
+    if (key && process.env[key] === undefined) {
+      process.env[key] = value;
+    }
+  });
+}
+
+loadEnvFile();
 
 const app = express();
 const port = 3000;
@@ -34,7 +66,8 @@ db.serialize(() => {
       username TEXT UNIQUE NOT NULL,
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
-      profile TEXT
+      profile TEXT,
+      avatar TEXT
     )
   `, (err) => {
     if (err) {
@@ -43,17 +76,25 @@ db.serialize(() => {
       console.log('Database and table ready');
     }
   });
+
+  db.run(`ALTER TABLE users ADD COLUMN avatar TEXT`, (err) => {
+    if (err && !err.message.includes('duplicate column name')) {
+      console.error('Error ensuring avatar column:', err.message);
+    }
+  });
 });
+
+const isValidEmail = email => /^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(email);
 
 // Routes
 app.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
-    return res.status(400).json({ error: 'Todos os campos (username, email, password) são obrigatórios.' });
+    return res.status(400).json({ error: 'Todos os campos sao obrigatorios.' });
   }
 
-  if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(email)) {
+  if (!isValidEmail(email)) {
     return res.status(400).json({ error: 'Email inválido.' });
   }
 
@@ -94,6 +135,10 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/auth/google', async (req, res) => {
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.includes('COLOQUE_SEU_CLIENT_ID_AQUI')) {
+    return res.status(503).json({ error: 'Login com Google ainda não configurado no servidor.' });
+  }
+
   const { idToken } = req.body;
   if (!idToken) return res.status(400).json({ error: 'Token ausente' });
 
