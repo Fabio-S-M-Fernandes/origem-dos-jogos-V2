@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Origem & Evolução dos Jogos</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="logo.png" type="image/png">
@@ -421,8 +421,8 @@
 
     <div class="footer-widget footer-contact">
       <h4>Contato</h4>
-      <p><i class="fas fa-envelope"></i> <a href="mailto:contato@seusite.com">contato@seusite.com</a></p>
-      <p><i class="fas fa-map-marker-alt"></i> Brasil</p>
+      <p><i class="fas fa-envelope"></i> <a href="mailto:fabiosoaresmoreirafernandesbjj@gmail.com">fabiosoaresmoreirafernandesbjj@gmail.com</a></p>
+      <p><i class="fas fa-map-marker-alt"></i><br>Brasil</p>
     </div>
   </div>
 
@@ -523,26 +523,42 @@
 
 <div id="profile-modal" class="modal">
   <div class="modal-overlay"></div>
-  <div class="modal-content">
+  <div class="modal-content profile-dashboard">
     <span class="close">&times;</span>
-    <h2>Perfil</h2>
-    <div id="profile-info"></div>
-    <div class="field-group">
-      <label for="profile-avatar-file">Foto de perfil (upload)</label>
-      <input type="file" id="profile-avatar-file" accept="image/*" />
-      <small>Escolha um arquivo JPG/PNG e ele será usado como avatar.</small>
-      <div id="upload-status" class="upload-status"></div>
+    
+    <header class="profile-header">
+      <h2>Meu Perfil</h2>
+      <p>Gerencie suas informações e aparência</p>
+    </header>
+
+    <div class="profile-grid">
+      <div class="profile-sidebar">
+        <div class="avatar-preview-container">
+          <div id="profile-info"></div> <label for="profile-avatar-file" class="upload-badge" title="Mudar foto">
+            <i class="fas fa-camera"></i>
+          </label>
+        </div>
+        <input type="file" id="profile-avatar-file" accept="image/*" hidden />
+        <button id="remove-avatar" type="button" class="btn-minimal">Remover foto</button>
+      </div>
+
+      <div class="profile-main">
+        <div class="field-group">
+          <label><i class="fas fa-link"></i> URL do Avatar Externo</label>
+          <input type="text" id="profile-avatar-url" placeholder="https://exemplo.com/foto.jpg" />
+        </div>
+
+        <div class="field-group">
+          <label><i class="fas fa-pen"></i> Bio / Descrição</label>
+          <textarea id="profile-text" placeholder="Conte um pouco sobre você..."></textarea>
+        </div>
+
+        <div id="upload-status" class="upload-status"></div>
+      </div>
     </div>
-    <div class="field-group">
-      <label for="profile-avatar-url">URL da sua foto de perfil (Google/externa)</label>
-      <input type="text" id="profile-avatar-url" placeholder="Cole aqui sua URL de avatar" />
-      <span class="error-text"></span>
-    </div>
-    <div class="field-group">
-      <button id="remove-avatar" type="button" class="btn-secondary">Remover avatar</button>
-    </div>
-    <textarea id="profile-text" placeholder="Atualize seu perfil"></textarea>
-    <button id="update-profile">Atualizar</button>
+    
+    <div class="profile-actions">
+      </div>
   </div>
 </div>
 

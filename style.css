@@ -2966,3 +2966,149 @@ button:focus {
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(45, 64, 176, .85);
 }
+
+/* =========================================
+   DASHBOARD DO PERFIL (NOVO VISUAL)
+   ========================================= */
+.profile-dashboard {
+  max-width: 600px !important;
+  width: 95%;
+  background: rgba(34, 15, 74, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.4) !important;
+  border-radius: 20px !important;
+  padding: 30px !important;
+}
+
+.profile-header {
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 15px;
+}
+
+.profile-header h2 {
+  color: var(--text);
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+}
+
+.profile-header p {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.profile-grid {
+  display: grid !important;
+  grid-template-columns: 160px 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Container da Foto */
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-preview-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+
+/* Força a imagem gerada pelo JS a ficar no padrão novo */
+.avatar-preview-container img, 
+#profile-info img {
+  width: 140px !important;
+  height: 140px !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  border: 3px solid var(--accent) !important;
+  box-shadow: var(--glow) !important;
+  margin: 0 !important;
+}
+
+/* Ícone de Câmera */
+.upload-badge {
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
+  background: var(--accent);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  font-size: 1.1rem;
+}
+
+.upload-badge:hover {
+  transform: scale(1.15);
+  background: var(--accent-soft);
+}
+
+/* Inputs da Direita */
+.profile-main .field-group {
+  margin-bottom: 18px;
+}
+
+.profile-main label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  color: var(--text-soft);
+}
+
+.profile-main input, 
+.profile-main textarea {
+  width: 100% !important;
+  background: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  color: white !important;
+  transition: all 0.3s !important;
+  font-family: inherit;
+}
+
+.profile-main input:focus, 
+.profile-main textarea:focus {
+  outline: none !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* Botão Remover */
+.btn-minimal {
+  background: transparent !important;
+  border: none !important;
+  color: #ff6b6b !important;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 15px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.btn-minimal:hover {
+  background: rgba(255, 107, 107, 0.1) !important;
+}
+
+/* Responsividade para Celular */
+@media (max-width: 600px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile-sidebar {
+    margin-bottom: 20px;
+  }
+}

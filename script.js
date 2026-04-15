@@ -719,6 +719,8 @@ const hasUserMenu = Boolean(userAvatarWrapper && userDropdown && userMenu);
 const hasAuthModals = Boolean(loginModal && registerModal && profileModal);
 
 const GOOGLE_CLIENT_ID = 'COLOQUE_SEU_CLIENT_ID_AQUI.apps.googleusercontent.com';
+const API_BASE_URL = window.API_BASE_URL || '/api';
+const AUTH_GOOGLE_URL = `${API_BASE_URL}/auth-google.php`;
 
 const MAX_AVATAR_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
@@ -792,7 +794,7 @@ function handleGoogleCredentialResponse(response) {
     return setErrorFeedback(loginModal, 'Google não retornou token');
   }
 
-  fetch('http://localhost:3000/auth/google', {
+  fetch(AUTH_GOOGLE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -1092,7 +1094,7 @@ registerForm.addEventListener('submit', async (e) => {
   const password = passwordInput.value;
 
   try {
-    const response = await fetch('http://localhost:3000/register', {
+    const response = await fetch(`${API_BASE_URL}/register.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password })
@@ -1105,7 +1107,7 @@ registerForm.addEventListener('submit', async (e) => {
       setErrorFeedback(registerModal, result.error || 'Erro no cadastro.');
     }
   } catch (error) {
-    setErrorFeedback(registerModal, 'Servidor offline. Inicie o back-end em http://localhost:3000.');
+    setErrorFeedback(registerModal, 'Servidor offline. Verifique sua API PHP ou defina API_BASE_URL.');
   } finally {
     button.classList.remove('loading');
     spinner.style.display = 'none';
@@ -1141,7 +1143,7 @@ loginForm.addEventListener('submit', async (e) => {
   const password = passwordInput.value;
 
   try {
-    const response = await fetch('http://localhost:3000/login', {
+    const response = await fetch(`${API_BASE_URL}/login.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -1157,7 +1159,7 @@ loginForm.addEventListener('submit', async (e) => {
       setErrorFeedback(loginModal, result.error || 'Credenciais inválidas.');
     }
   } catch (error) {
-    setErrorFeedback(loginModal, 'Servidor offline. Inicie o back-end em http://localhost:3000.');
+    setErrorFeedback(loginModal, 'Servidor offline. Verifique sua API PHP ou defina API_BASE_URL.');
   } finally {
     button.classList.remove('loading');
     spinner.style.display = 'none';
@@ -1260,7 +1262,7 @@ if (submitButton) {
     // Tenta enviar para API caso exista back-end
     if (user.id) {
       try {
-        const response = await fetch(`http://localhost:3000/profile/${user.id}`, {
+        const response = await fetch(`${API_BASE_URL}/profile.php?id=${user.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ profile, avatar: avatarUrl })
