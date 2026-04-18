@@ -10,29 +10,28 @@
 <body>
   <div id="shared-header"></div>
 
-  <main class="card" style="margin: 120px 2rem 2rem;">
+  <main class="card page-shell">
     <h1>Configurações</h1>
     <p>Esta página é para configurar preferências do usuário.</p>
     <section>
       <h2>Preferências iniciais</h2>
-      <form id="settings-form">
-        <label>
+      <form id="settings-form" class="settings-form">
+        <label class="settings-option">
           <input type="checkbox" id="dark-mode" /> Ativar modo escuro
         </label>
-        <br />
-        <label>
+        <label class="settings-option">
           <input type="checkbox" id="enable-notifications" /> Receber notificações
         </label>
-        <br />
-        <button type="submit">Salvar</button>
+        <button type="submit" class="btn-quiz-start settings-submit">Salvar</button>
       </form>
-      <div id="settings-message"></div>
+      <div id="settings-message" class="settings-message"></div>
     </section>
   </main>
 
   <div id="shared-footer"></div>
 
   <script src="layout.js"></script>
+  <script src="responsive-nav.js"></script>
   <script>
     const settingsForm = document.getElementById('settings-form');
     if (settingsForm) {

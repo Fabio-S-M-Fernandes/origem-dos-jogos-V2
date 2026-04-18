@@ -11,7 +11,7 @@
 <body>
   <div id="shared-header"></div>
 
-  <main class="card" style="margin: 120px 2rem 2rem;">
+  <main class="card page-shell">
     <h1>Perfil do Usuário</h1>
     <p>Esta é a página dedicada ao perfil do usuário.</p>
     <p>Aqui você pode ver suas informações, editar seu avatar e texto de perfil.</p>
@@ -25,6 +25,7 @@
   <div id="shared-footer"></div>
 
   <script src="layout.js"></script>
+  <script src="responsive-nav.js"></script>
   <script>
     function renderProfilePage() {
       const user = JSON.parse(localStorage.getItem('user'));
@@ -35,8 +36,8 @@
         return;
       }
       profileContainer.innerHTML = `
-        <div class="card" style="padding: 18px;">
-          <img src="${user.avatar || user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.username || 'Guest') + '&background=6648ff&color=fff'}" alt="Avatar" style="width:128px;height:128px;border-radius:50%;display:block;margin-bottom:16px;" />
+        <div class="account-panel">
+          <img class="account-avatar" src="${user.avatar || user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.username || 'Guest') + '&background=6648ff&color=fff'}" alt="Avatar" />
           <p><strong>Usuário:</strong> ${user.username || 'N/A'}</p>
           <p><strong>Email:</strong> ${user.email || 'N/A'}</p>
           <p><strong>Sobre:</strong> ${user.profile || 'Nenhum texto de perfil salvo.'}</p>
